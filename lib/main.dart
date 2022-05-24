@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import './view/bienvenida.dart';
+import 'package:maxqui_shop/app_styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import './views/pages.dart';
 
-void main() {
-  runApp(MyApp());
+bool? seenOnboard;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // to show status bar
+  SystemChrome.setEnabledSystemUIOverlays(
+      [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  // to load onboard for the first time only
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  seenOnboard = pref.getBool('seenOnboard') ?? false; //if null set to false
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Maxqui Shop',
       theme: ThemeData(
-        //Colocamos la fuente de google fonts
-        textTheme: GoogleFonts.mulishTextTheme(Theme.of(context).textTheme),
+        textTheme: GoogleFonts.mulishTextTheme(
+          Theme.of(context).textTheme,
+        ),
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: kScaffoldBackground,
       ),
-      home: PaginaBienvenidaWidget(),
+      home: seenOnboard == true ? const SignUpPage() : const OnBoardingPage(),
     );
   }
 }
