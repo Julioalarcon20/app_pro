@@ -92,16 +92,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     text: TextSpan(
                       style: kBodyText1,
                       children: [
-                        TextSpan(text: 'WE CAN '),
+                        TextSpan(text: 'Una aplicación pensada 100% en los emprendedores'),
                         TextSpan(
-                            text: 'HELP YOU ',
                             style: TextStyle(
                               color: kPrimaryColor,
                             )),
-                        TextSpan(text: 'TO BE A BETTER '),
-                        TextSpan(text: 'VERSION OF '),
+                        
                         TextSpan(
-                          text: 'YOURSELF ',
                           style: TextStyle(
                             color: kPrimaryColor,
                           ),
@@ -125,7 +122,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   currentPage == onboardingContents.length - 1
                       ? Expanded(
                           child: MyTextButton(
-                            buttonName: 'Comenzar',
+                            buttonName: 'Comienza ya',
                             onPressed: () {
                               Navigator.push(
                                   context,

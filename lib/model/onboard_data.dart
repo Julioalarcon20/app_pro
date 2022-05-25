@@ -14,15 +14,15 @@ List<OnBoarding> onboardingContents = [
     image: 'assets/image/onboarding_image_1.png',
   ),
   OnBoarding(
-    title: 'Create new habits easily',
+    title: 'Productos 100% locales',
     image: 'assets/image/onboarding_image_2.png',
   ),
   OnBoarding(
-    title: 'Keep track of your progress',
+    title: 'Una menera mas fácil de contactar al emprendedor',
     image: 'assets/image/onboarding_image_3.png',
   ),
   OnBoarding(
-    title: 'Join a supportive community',
+    title: 'Ayuda al comercio local',
     image: 'assets/image/onboarding_image_4.png',
   ),
 ];

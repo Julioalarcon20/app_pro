@@ -59,14 +59,14 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: const [
-                          Text(
-                            'Bienvenido a\nMaxqui Shop',
-                            style: TextStyle(
-                                color: Color(0xffFC5939),
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
+                          // Text(
+                          //   '\nM',
+                          //   style: TextStyle(
+                          //       color: Color(0xffFC5939),
+                          //       fontSize: 30,
+                          //       fontWeight: FontWeight.bold),
+                          //   textAlign: TextAlign.center,
+                          // ),
                         ],
                       ),
                     ),
