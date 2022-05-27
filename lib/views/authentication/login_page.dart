@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                                       child: Column(
                                         children: [
                                           MyTextFormField(
-                                            hint: 'Email 2',
+                                            hint: 'Email',
                                             icon: Icons.email_outlined,
                                             fillColor: const Color(0xff201753),
                                             inputType:
