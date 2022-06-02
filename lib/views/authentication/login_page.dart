@@ -1,10 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../app_styles.dart';
 import '../../size_configs.dart';
 import '../../validators.dart';
 import '../pages.dart';
 import '../../widgets/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import '../../api/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // its best practice to do relative imports
 
@@ -17,12 +19,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _loginKey = GlobalKey<FormState>();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
 
-  void onSubmit() {
-    _loginKey.currentState!.validate();
-  }
-
-  List<FocusNode> _loginFocusNodes = [
+  final List<FocusNode> _loginFocusNodes = [
     FocusNode(),
     FocusNode(),
   ];
@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Positioned(
           bottom: height * 2,
-          child: Image.asset('assets/image/auth/login_bg.png'),
+          child: Image.asset('assets/image/login_bg.png'),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -58,45 +58,19 @@ class _LoginPageState extends State<LoginPage> {
                       flex: 2,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          // Text(
-                          //   '\nM',
-                          //   style: TextStyle(
-                          //       color: Color(0xffFC5939),
-                          //       fontSize: 30,
-                          //       fontWeight: FontWeight.bold),
-                          //   textAlign: TextAlign.center,
-                          // ),
-                        ],
                       ),
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 4,
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Column(
-                              children: const [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                // LargeIconButton(
-                                //   buttonName: 'Continuar con Google',
-                                //   color: Colors.red,
-                                //   iconImage:
-                                //       'assets/image/auth/google_icon.png',
-                                // ),
-                              ],
-                            ),
-                          ),
                           const SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Expanded(
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Color(0xff0E112E),
+                                color: kScaffoldBackground,
                                 borderRadius: BorderRadius.circular(24),
                               ),
                               child: Column(
@@ -105,12 +79,8 @@ class _LoginPageState extends State<LoginPage> {
                                     height: 14,
                                   ),
                                   Text(
-                                    'Iniciar sesión con correo electrónico',
-                                    style: kBodyText3,
-                                  ),
-                                  Divider(
-                                    height: 30,
-                                    color: kPrimaryColor.withOpacity(0.5),
+                                    'Iniciar sesión',
+                                    style: kBodyText2,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -120,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                                       child: Column(
                                         children: [
                                           MyTextFormField(
+                                            controller: _email,
                                             hint: 'Email',
                                             icon: Icons.email_outlined,
                                             fillColor: const Color(0xff201753),
@@ -130,6 +101,8 @@ class _LoginPageState extends State<LoginPage> {
                                             validator: emailValidator,
                                           ),
                                           MyPasswordField(
+                                            hint: 'Contraseña',
+                                            controller: _password,
                                             fillColor: const Color(0xff201753),
                                             focusNode: _loginFocusNodes[1],
                                             validator: passwordValidator,
@@ -169,8 +142,9 @@ class _LoginPageState extends State<LoginPage> {
                                     children: const [
                                       Text(
                                         "¿No tienes una cuenta? ",
-                                        style:
-                                            TextStyle(color: Color(0xffFC5939)),
+                                        style: TextStyle(
+                                            color: Color(0xffFC5939),
+                                            fontSize: 20),
                                       ),
                                       SmallTextButton(
                                         buttonText: 'Regístrate',
@@ -193,5 +167,22 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ],
     );
+  }
+
+  Future<void> onSubmit() async {
+    if (_loginKey.currentState!.validate()) {
+      var data = {'email': _email.text, 'password': _password.text};
+      var res = await CallApi().postData(data, 'login');
+      var body = json.decode(res.body);
+      if (body['success']) {
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        localStorage.setString('access_token', body['access_token']);
+        localStorage.setString('user', json.encode(body['user']));
+        Navigator.push(
+            context, new MaterialPageRoute(builder: (context) => Home()));
+      }
+    } else {
+      _loginKey.currentState!.validate();
+    }
   }
 }

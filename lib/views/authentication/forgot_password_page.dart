@@ -4,6 +4,7 @@ import '../../size_configs.dart';
 import '../../validators.dart';
 import '../pages.dart';
 import '../../widgets/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _forgotPassKey = GlobalKey<FormState>();
+  final email = TextEditingController();
 
   void _onSumbit() {
     _forgotPassKey.currentState!.validate();
@@ -40,7 +42,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         leading: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: CircleAvatar(
-            backgroundColor: kSecondaryColor.withOpacity(0.1),
+            backgroundColor: kPrimaryColor.withOpacity(0.2),
             child: IconButton(
               icon: const Icon(
                 Icons.arrow_back,
@@ -74,9 +76,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     height: height * 2,
                   ),
                   Container(
-                    child: Image.asset(
-                      'assets/image/auth/forgot_password_illustration.png',
-                    ),
+                    child: (SvgPicture.asset('assets/svg/recuperar_pass.svg',
+                        width: 210, height: 210)),
                   ),
                   SizedBox(
                     height: height * 2,
@@ -103,6 +104,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               height: 10,
                             ),
                             MyTextFormField(
+                              controller: email,
                               hint: 'Email',
                               icon: Icons.email_outlined,
                               fillColor: kScaffoldBackground,
@@ -124,29 +126,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Recordar contraseña',
-                              style: kBodyText3,
-                            ),
-                            const SmallTextButton(
-                              buttonText: 'Iniciar Sesion',
-                              page: LoginPage(),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        )
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),

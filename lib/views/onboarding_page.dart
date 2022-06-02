@@ -5,6 +5,7 @@ import 'package:maxqui_shop/model/onboard_data.dart';
 import 'package:maxqui_shop/size_configs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './pages.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/widgets.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -79,7 +80,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   ),
                   Container(
                     height: sizeV * 50,
-                    child: Image.asset(
+                    child: SvgPicture.asset(
                       onboardingContents[index].image,
                       fit: BoxFit.contain,
                     ),
@@ -90,14 +91,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                      style: kBodyText1,
-                      children: [
-                        TextSpan(text: 'Una aplicación pensada 100% en los emprendedores'),
+                      style: kBodyText3,
+                      children: const [
+                        TextSpan(
+                            text:
+                                'Un E-commerce pensando para los emprendedores'),
                         TextSpan(
                             style: TextStyle(
-                              color: kPrimaryColor,
-                            )),
-                        
+                          color: kPrimaryColor,
+                        )),
                         TextSpan(
                           style: TextStyle(
                             color: kPrimaryColor,
@@ -155,7 +157,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               name: 'Siguiente',
                               onPressed: () {
                                 _pageController.nextPage(
-                                  duration: Duration(milliseconds: 400),
+                                  duration: const Duration(milliseconds: 400),
                                   curve: Curves.easeInOut,
                                 );
                               },

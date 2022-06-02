@@ -11,6 +11,7 @@ class MyTextFormField extends StatelessWidget {
     required this.inputAction,
     required this.focusNode,
     required this.validator,
+    required this.controller,
   }) : super(key: key);
 
   final String hint;
@@ -19,6 +20,7 @@ class MyTextFormField extends StatelessWidget {
   final TextInputType inputType;
   final TextInputAction inputAction;
   final FocusNode focusNode;
+  final TextEditingController controller;
   final String? Function(String?) validator;
 
   @override
@@ -34,6 +36,7 @@ class MyTextFormField extends StatelessWidget {
         textInputAction: inputAction,
         focusNode: focusNode,
         validator: validator,
+        controller:controller,
         decoration: InputDecoration(
           filled: true,
           fillColor: fillColor,
@@ -48,7 +51,7 @@ class MyTextFormField extends StatelessWidget {
             child: Container(
               // height: 60,
               // this container height is causing the error
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   right: BorderSide(
                     width: 2,

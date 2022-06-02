@@ -7,11 +7,15 @@ class MyPasswordField extends StatefulWidget {
     required this.fillColor,
     required this.focusNode,
     required this.validator,
+    required this.controller,
+    required this.hint,
   }) : super(key: key);
 
   final Color fillColor;
   final FocusNode focusNode;
   final String? Function(String?) validator;
+  final TextEditingController controller;
+  final String hint;
 
   @override
   _MyPasswordFieldState createState() => _MyPasswordFieldState();
@@ -33,12 +37,13 @@ class _MyPasswordFieldState extends State<MyPasswordField> {
         focusNode: widget.focusNode,
         obscureText: hidePassword,
         validator: widget.validator,
+        controller: widget.controller,
         decoration: InputDecoration(
           filled: true,
           fillColor: widget.fillColor,
           border: kInputBorder,
           enabledBorder: kInputBorder,
-          hintText: 'Contraseña',
+          hintText: widget.hint,
           hintStyle: kInputHintStyle,
           // contentPadding: EdgeInsets.all(0),
           suffix: Padding(

@@ -32,6 +32,8 @@ dependencies:
   # Implementacion de las fuentes de google
   google_fonts: ^2.3.3
   flutter_svg: ^1.1.0
+  http: ^0.13.4
+  dio: ^4.0.6
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -74,8 +76,7 @@ flutter:
   #Creamos la variable para las imgs
   assets:
     - assets/image/ 
- 
-    - assets/image/auth/
+    - assets/svg/
   fonts:
     - family: Klasik
       fonts:

@@ -10,19 +10,19 @@ class OnBoarding {
 
 List<OnBoarding> onboardingContents = [
   OnBoarding(
-    title: 'Bienvenido a \n Maxqui Shop',
-    image: 'assets/image/onboarding_image_1.png',
+    title: 'Bienvenido a\n Maxqui Shop',
+    image: 'assets/svg/page3.svg',
   ),
   OnBoarding(
-    title: 'Productos 100% locales',
-    image: 'assets/image/onboarding_image_2.png',
+    title: 'Esta disponible las 24 horas del día',
+    image: 'assets/svg/page2.svg',
   ),
   OnBoarding(
-    title: 'Una menera mas fácil de contactar al emprendedor',
-    image: 'assets/image/onboarding_image_3.png',
+    title: 'Puedes encontrar a todos los emprendedores de la Parroquia',
+    image: 'assets/svg/page1.svg',
   ),
   OnBoarding(
     title: 'Ayuda al comercio local',
-    image: 'assets/image/onboarding_image_4.png',
+    image: 'assets/svg/page4.svg',
   ),
 ];

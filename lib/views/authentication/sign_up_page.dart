@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../app_styles.dart';
 import '../../size_configs.dart';
 import '../../validators.dart';
 import '../pages.dart';
 import '../../widgets/widgets.dart';
+import '../../api/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -14,16 +18,18 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final _signUpKey = GlobalKey<FormState>();
-
-  void onSubmit() {
-    _signUpKey.currentState!.validate();
-  }
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController mailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController ressController = TextEditingController();
 
   List<FocusNode> _signUpFocusNodes = [
     FocusNode(),
     FocusNode(),
     FocusNode(),
+    FocusNode(),
   ];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -46,7 +52,11 @@ class _SignUpPageState extends State<SignUpPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                Image.asset('assets/image/auth/signup_illustration.png'),
+                // Image.asset('assets/image/auth/signup_illustration.png'),
+                Container(
+                  child: (SvgPicture.asset('assets/svg/registro.svg',
+                      width: 200, height: 200)),
+                ),
                 SizedBox(
                   height: height * 2,
                 ),
@@ -62,6 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Column(
                     children: [
                       MyTextFormField(
+                        controller: firstNameController,
                         fillColor: Color(0xff201753),
                         hint: 'Nombre',
                         icon: Icons.person,
@@ -71,6 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         validator: nameValidator,
                       ),
                       MyTextFormField(
+                          controller: mailController,
                           hint: 'Email',
                           icon: Icons.email_outlined,
                           fillColor: Color(0xff201753),
@@ -79,19 +91,30 @@ class _SignUpPageState extends State<SignUpPage> {
                           focusNode: _signUpFocusNodes[1],
                           validator: emailValidator),
                       MyPasswordField(
+                        hint: 'Contraseña',
+                        controller: passwordController,
                         fillColor: Color(0xff201753),
                         focusNode: _signUpFocusNodes[2],
                         validator: passwordValidator,
                       ),
+                      MyPasswordField(
+                        hint: 'Repetir Contraseña',
+                        controller: ressController,
+                        fillColor: Color(0xff201753),
+                        focusNode: _signUpFocusNodes[3],
+                        validator: password_confiValidator,
+                      ),
                       const MyCheckBox(
                         text: 'Mantener sesión abierta',
                       ),
-                      MyCheckBox(
+                      const MyCheckBox(
                         text: 'Aceptar terminos y condiciones de servicio',
                       ),
                       MyTextButton(
                         buttonName: 'Crear cuenta',
-                        onPressed: onSubmit,
+                        onPressed: () => {
+                          _isLoading ? null : onSubmit(),
+                        },
                         bgColor: kPrimaryColor,
                       ),
                     ],
@@ -121,10 +144,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Text(
                       '¿Ya tienes una cuenta? ',
-                      style: TextStyle(color: Color(0xffFC5939)),
+                      style: TextStyle(color: Color(0xffFC5939), fontSize: 20),
                     ),
                     SmallTextButton(
                       buttonText: 'Iniciar sesión',
@@ -141,5 +164,35 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  onSubmit() async {
+    // _signUpKey.currentState!.validate();
+    if (_signUpKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      var data = {
+        'Nombre': firstNameController.text,
+        'email': mailController.text,
+        'password': passwordController.text,
+        'password_confirmation': ressController.text,
+      };
+      var res = await CallApi().postData(data, 'registro');
+      var body = json.decode(res.body);
+      if (body['success']) {
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        localStorage.setString('access_token', body['access_token']);
+        localStorage.setString('user', json.encode(body['user']));
+
+        Navigator.push(
+            context, new MaterialPageRoute(builder: (context) => Home()));
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      _signUpKey.currentState!.validate();
+    }
   }
 }
