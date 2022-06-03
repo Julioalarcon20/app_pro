@@ -69,8 +69,8 @@ class _NavBarState extends State<NavBar> {
           ),
           const Divider(),
           ListTile(
-            leading: Icon(Icons.settings, color: Colors.white),
-            title: Text(
+            leading: const Icon(Icons.settings, color: Colors.white),
+            title: const Text(
               'Opciones',
               style: TextStyle(color: Colors.white),
             ),
@@ -78,15 +78,16 @@ class _NavBarState extends State<NavBar> {
           ),
           const Divider(),
           ListTile(
-            leading: Icon(Icons.description, color: Colors.white),
-            title: Text('Sobre la aplicación',
+            leading: const Icon(Icons.description, color: Colors.white),
+            title: const Text('Sobre la aplicación',
                 style: TextStyle(color: Colors.white)),
             onTap: () => null,
           ),
           const Divider(),
           ListTile(
-            leading: Icon(Icons.exit_to_app, color: Colors.white),
-            title: Text('Cerrar Sesión', style: TextStyle(color: Colors.white)),
+            leading: const Icon(Icons.exit_to_app, color: Colors.white),
+            title: const Text('Cerrar Sesión',
+                style: TextStyle(color: Colors.white)),
             onTap: () => {logout()},
           ),
         ],

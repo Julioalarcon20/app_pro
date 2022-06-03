@@ -168,7 +168,6 @@ class _LoginPageState extends State<LoginPage> {
       ],
     );
   }
-<<<<<<< HEAD
 
   Future<void> onSubmit() async {
     if (_loginKey.currentState!.validate()) {
@@ -180,14 +179,10 @@ class _LoginPageState extends State<LoginPage> {
         localStorage.setString('access_token', body['access_token']);
         localStorage.setString('user', json.encode(body['user']));
         Navigator.push(
-            context, 
-            new MaterialPageRoute(builder: (context) => Home()));
-=======
-  onSubmit(){
-     Navigator.push(
-        context, new MaterialPageRoute(builder: (context) => Home()));
->>>>>>> 757790e2ccbeccbe332e22bad61afdaba8ef2d5f
+            context, new MaterialPageRoute(builder: (context) => Home()));
       }
+    }
+  }
   //  Future<void> onSubmit() async {
   //   if (_loginKey.currentState!.validate()) {
   //     var data = {'email': _email.text, 'password': _password.text};
@@ -203,5 +198,5 @@ class _LoginPageState extends State<LoginPage> {
   //   } else {
   //     _loginKey.currentState!.validate();
   //   }
-  // } 
+  // }
 }

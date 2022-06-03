@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-<<<<<<< HEAD
         debugShowCheckedModeBanner: false,
         title: 'Maxqui Shop',
         theme: ThemeData(
@@ -52,22 +51,6 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: kScaffoldBackground,
         ),
         home: seenOnboard == true ? SignUpPage() : const OnBoardingPage());
-=======
-
-      debugShowCheckedModeBanner: false,
-      title: 'Maxqui Shop',
-      theme: ThemeData(
-        //useMaterial3: true,
-        // colorScheme: ColorScheme.dark(),
-        textTheme: GoogleFonts.mulishTextTheme(
-          Theme.of(context).textTheme,
-        ),
-        primarySwatch: Colors.teal,
-        scaffoldBackgroundColor: kScaffoldBackground,
-      ),
-      home: seenOnboard == true ? SignUpPage() : const OnBoardingPage(),
-    );
->>>>>>> 757790e2ccbeccbe332e22bad61afdaba8ef2d5f
   }
 }
 
