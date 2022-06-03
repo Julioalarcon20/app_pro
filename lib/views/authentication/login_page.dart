@@ -179,7 +179,8 @@ class _LoginPageState extends State<LoginPage> {
         localStorage.setString('access_token', body['access_token']);
         localStorage.setString('user', json.encode(body['user']));
         Navigator.push(
-            context, new MaterialPageRoute(builder: (context) => Home()));
+            context, 
+            new MaterialPageRoute(builder: (context) => Home()));
       }
     } else {
       _loginKey.currentState!.validate();

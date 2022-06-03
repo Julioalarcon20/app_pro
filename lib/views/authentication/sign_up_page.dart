@@ -166,33 +166,38 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  onSubmit() async {
-    // _signUpKey.currentState!.validate();
-    if (_signUpKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-      var data = {
-        'Nombre': firstNameController.text,
-        'email': mailController.text,
-        'password': passwordController.text,
-        'password_confirmation': ressController.text,
-      };
-      var res = await CallApi().postData(data, 'registro');
-      var body = json.decode(res.body);
-      if (body['success']) {
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setString('access_token', body['access_token']);
-        localStorage.setString('user', json.encode(body['user']));
-
-        Navigator.push(
+onSubmit(){
+    Navigator.push(
             context, new MaterialPageRoute(builder: (context) => Home()));
       }
-      setState(() {
-        _isLoading = false;
-      });
-    } else {
-      _signUpKey.currentState!.validate();
-    }
-  }
+
+  // onSubmit() async {
+  //   // _signUpKey.currentState!.validate();
+  //   if (_signUpKey.currentState!.validate()) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //     var data = {
+  //       'Nombre': firstNameController.text,
+  //       'email': mailController.text,
+  //       'password': passwordController.text,
+  //       'password_confirmation': ressController.text,
+  //     };
+  //     var res = await CallApi().postData(data, 'registro');
+  //     var body = json.decode(res.body);
+  //     if (body['success']) {
+  //       SharedPreferences localStorage = await SharedPreferences.getInstance();
+  //       localStorage.setString('access_token', body['access_token']);
+  //       localStorage.setString('user', json.encode(body['user']));
+
+  //       Navigator.push(
+  //           context, new MaterialPageRoute(builder: (context) => Home()));
+  //     }
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   } else {
+  //     _signUpKey.currentState!.validate();
+  //   }
+  // }
 }

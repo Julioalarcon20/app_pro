@@ -12,8 +12,14 @@ class CallApi {
   }
 
   getData(apiUrl) async {
-    var fullUrl = _url + apiUrl + await _getToken();
-    return await http.get(Uri.parse(fullUrl), headers: _setHeaders());
+    var fullUrl = _url + apiUrl;
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('access_token');
+    return await http.get(Uri.parse(fullUrl), headers:{
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization':'Bearer $token', 
+    });
   }
 
   _setHeaders() => {
@@ -23,7 +29,7 @@ class CallApi {
 
   _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var token = localStorage.getString('token');
-    return '?token=$token';
+    var token = localStorage.getString('access_token');
+    return '?access_token=$token';
   }
 }
