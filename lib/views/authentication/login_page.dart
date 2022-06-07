@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> onSubmit() async {
+   onSubmit() async {
     if (_loginKey.currentState!.validate()) {
       var data = {'email': _email.text, 'password': _password.text};
       var res = await CallApi().postData(data, 'login');
@@ -181,22 +181,8 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.push(
             context, new MaterialPageRoute(builder: (context) => Home()));
       }
+    } else {
+      _loginKey.currentState!.validate();
     }
   }
-  //  Future<void> onSubmit() async {
-  //   if (_loginKey.currentState!.validate()) {
-  //     var data = {'email': _email.text, 'password': _password.text};
-  //     var res = await CallApi().postData(data, 'login');
-  //     var body = json.decode(res.body);
-  //     if (body['success']) {
-  //       SharedPreferences localStorage = await SharedPreferences.getInstance();
-  //       localStorage.setString('access_token', body['access_token']);
-  //       localStorage.setString('user', json.encode(body['user']));
-  //       Navigator.push(
-  //           context, new MaterialPageRoute(builder: (context) => Home()));
-  //     }
-  //   } else {
-  //     _loginKey.currentState!.validate();
-  //   }
-  // }
 }

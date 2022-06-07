@@ -13,11 +13,6 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   var userData;
-  @override
-  void initState() {
-    _getUserInfo();
-    super.initState();
-  }
 
   void _getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -26,6 +21,12 @@ class _NavBarState extends State<NavBar> {
     setState(() {
       userData = user;
     });
+  }
+
+  @override
+  void initState() {
+    _getUserInfo();
+    super.initState();
   }
 
   @override
@@ -46,7 +47,7 @@ class _NavBarState extends State<NavBar> {
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.asset(
-                  '../assets/image/perfil/perfil.png',
+                  'assets/image/perfil/perfil.png',
                   fit: BoxFit.cover,
                   width: 90,
                   height: 90,
@@ -65,7 +66,8 @@ class _NavBarState extends State<NavBar> {
           ListTile(
             leading: Icon(Icons.person, color: Colors.white),
             title: Text('Perfil', style: TextStyle(color: Colors.white)),
-            onTap: () => null,
+            onTap: () => Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => PerfilScreen())),
           ),
           const Divider(),
           ListTile(

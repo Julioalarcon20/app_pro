@@ -5,8 +5,6 @@ import 'package:maxqui_shop/app_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './views/pages.dart';
 
-
-
 bool? seenOnboard;
 
 void main() async {
@@ -17,7 +15,7 @@ void main() async {
   // to load onboard for the first time only
   SharedPreferences pref = await SharedPreferences.getInstance();
   seenOnboard = pref.getBool('seenOnboard') ?? false; //if null set to false
-
+  SharedPreferences comprobar = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 

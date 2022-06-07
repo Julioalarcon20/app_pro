@@ -4,6 +4,7 @@ import './size_configs.dart';
 const Color kPrimaryColor = Color(0xffFC5939);
 const Color kSecondaryColor = Color(0xffFFFFFF);
 const Color kScaffoldBackground = Color(0xff0E112E);
+const Color ktercero = Color(0xff201753);
 
 final kTitle = TextStyle(
   fontFamily: 'Aleo',

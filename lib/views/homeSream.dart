@@ -23,10 +23,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        backgroundColor: Colors.transparent,
       ),
       drawer: NavBar(),
-      endDrawer: NavBar(),
       body: Center(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

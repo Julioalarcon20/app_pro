@@ -166,10 +166,10 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-onSubmit(){
+  onSubmit() {
     Navigator.push(
-            context, new MaterialPageRoute(builder: (context) => Home()));
-      }
+        context, new MaterialPageRoute(builder: (context) => Home()));
+  }
 
   // onSubmit() async {
   //   // _signUpKey.currentState!.validate();
