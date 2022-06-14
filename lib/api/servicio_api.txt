@@ -1,0 +1,110 @@
+//importamos la clase api_response.dart
+import 'dart:convert';
+import 'package:maxqui_shop/model/apirespuesta.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import '../util/perfil.dart';
+
+_setHeaders() => {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+Future<ApiRespuesta> login(String email, String password) async {
+  ApiRespuesta apiRespuesta = ApiRespuesta();
+  try {
+    final respuesta = await http.post(Uri.parse(loginUrl),
+        headers: _setHeaders(), body: {'email': email, 'password': password});
+    switch (respuesta.statusCode) {
+      case 200:
+        apiRespuesta.data = Usuario.fromJson(jsonDecode(respuesta.body));
+        break;
+      case 420:
+        final errors = jsonDecode(respuesta.body)['error'];
+        apiRespuesta.error = errors[errors.key.elementAt(0)[0]];
+        break;
+      case 403:
+        apiRespuesta.error = jsonDecode(respuesta.body)['message'];
+        break;
+      default:
+        apiRespuesta.error = somethingWentWrong;
+        break;
+    }
+  } catch (e) {
+    apiRespuesta.error = serverError;
+  }
+  return apiRespuesta;
+}
+
+Future<ApiRespuesta> registro(
+    String nombre, String email, String password) async {
+  ApiRespuesta apiRespuesta = ApiRespuesta();
+  try {
+    final respuesta =
+        await http.post(Uri.parse(registroUrl), headers: _setHeaders(), body: {
+      "Nombre": nombre,
+      'email': email,
+      'password': password,
+      'password_confirmation': password
+    });
+    switch (respuesta.statusCode) {
+      case 200:
+        apiRespuesta.data = Usuario.fromJson(jsonDecode(respuesta.body));
+        break;
+      case 420:
+        final errors = jsonDecode(respuesta.body)['error'];
+        apiRespuesta.error = errors[errors.key.elementAt(0)[0]];
+        break;
+      case 403:
+        apiRespuesta.error = jsonDecode(respuesta.body)['message'];
+        break;
+      default:
+        apiRespuesta.error = somethingWentWrong;
+        break;
+    }
+  } catch (e) {
+    apiRespuesta.error = serverError;
+  }
+  return apiRespuesta;
+}
+
+Future<ApiRespuesta> getPerfil() async {
+  ApiRespuesta apiRespuesta = ApiRespuesta();
+  try {
+    String token = await getToken();
+    final respuesta = await http.get(Uri.parse(userUrl), headers: {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    switch (respuesta.statusCode) {
+      case 200:
+        apiRespuesta.data = Usuario.fromJson(jsonDecode(respuesta.body));
+        break;
+      case 401:
+        apiRespuesta.error = noAutenticado;
+        break;
+      default:
+        apiRespuesta.error = somethingWentWrong;
+        break;
+    }
+  } catch (e) {
+    apiRespuesta.error = serverError;
+  }
+  return apiRespuesta;
+}
+
+Future<String> getToken() async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  return localStorage.getString('access_token') ?? '';
+}
+
+Future<int> getUserId() async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  return localStorage.getInt('id') ?? 0;
+}
+
+Future<bool> logout() async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  return await localStorage.remove('access_toke');
+}

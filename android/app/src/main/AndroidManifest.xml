@@ -2,7 +2,6 @@
     package="com.example.maxqui_shop">
    <application
         android:label="Maxqui Shop"
-        android:requestLegacyExternalStorage="true"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

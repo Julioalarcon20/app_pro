@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maxqui_shop/app_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './views/pages.dart';
+import 'api/api.dart';
+import 'model/apirespuesta.dart';
 
 bool? seenOnboard;
 
@@ -33,8 +35,18 @@ const MaterialColor myColour =
   900: const Color(0xff0E112E),
 });
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,4 +63,3 @@ class MyApp extends StatelessWidget {
         home: seenOnboard == true ? SignUpPage() : const OnBoardingPage());
   }
 }
-

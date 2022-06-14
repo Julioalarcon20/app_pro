@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../app_styles.dart';
+import '../../model/apirespuesta.dart';
 import '../../size_configs.dart';
+import '../../util/perfil.dart';
 import '../../validators.dart';
 import '../pages.dart';
 import '../../widgets/widgets.dart';
@@ -169,17 +171,28 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-   onSubmit() async {
+  onSubmit() async {
     if (_loginKey.currentState!.validate()) {
+      Usuario cliente = Usuario();
       var data = {'email': _email.text, 'password': _password.text};
       var res = await CallApi().postData(data, 'login');
       var body = json.decode(res.body);
-      if (body['success']) {
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setString('access_token', body['access_token']);
-        localStorage.setString('user', json.encode(body['user']));
-        Navigator.push(
-            context, new MaterialPageRoute(builder: (context) => Home()));
+      if (body['success'] == false) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              "El usuario aun no se encuentra registado o revisa las credenciales ingresadas",
+              style: TextStyle(color: kSecondaryColor)),
+          backgroundColor: kPrimaryColor,
+        ));
+      } else {
+        if (body['success']) {
+          SharedPreferences localStorage =
+              await SharedPreferences.getInstance();
+          localStorage.setString('access_token', body['access_token']);
+          localStorage.setString('user', json.encode(body['user']));
+          Navigator.push(
+              context, new MaterialPageRoute(builder: (context) => Home()));
+        }
       }
     } else {
       _loginKey.currentState!.validate();

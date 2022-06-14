@@ -20,6 +20,7 @@ class EditarScreen extends StatefulWidget {
 class _EditarScreenState extends State<EditarScreen> {
   final _signUpKey = GlobalKey<FormState>();
   XFile? image;
+  String imageBase64 = "";
   TextEditingController firstNameController = TextEditingController();
   TextEditingController ApellidoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -83,28 +84,36 @@ class _EditarScreenState extends State<EditarScreen> {
         physics: const BouncingScrollPhysics(),
         children: [
           GestureDetector(
-              onTap: () async {
-                final ImagePicker _picker = ImagePicker();
-                // Pick an image
-                image = await _picker.pickImage(source: ImageSource.gallery);
-                if (image != null) {
-                  final byte = File(image!.path).readAsBytesSync();
-                  userData["img_perfil"] = base64Encode(byte);
-                }
-                setState(() {});
-              },
-              child: image == null
-                  ? ProfileWidget(
-                      imagePath:
-                          'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
-                      onClicked: () async {},
-                    )
-                  : ClipOval(
+            onTap: () async {
+              final ImagePicker _picker = ImagePicker();
+              image = await _picker.pickImage(source: ImageSource.gallery);
+              if (image != null) {
+                final bytes = File(image!.path).readAsBytesSync();
+                imageBase64 = base64Encode(bytes);
+              }
+              setState(() {});
+            },
+            child: image == null
+                ? ProfileWidget(
+                    imagePath:
+                        'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
+                    onClicked: () async {},
+                  )
+                : Center(
+                    child: Stack(children: [
+                    ClipOval(
                       child: Material(
-                      color: Colors.transparent,
-                      child: Image.file(File(image!.path),
-                          fit: BoxFit.cover, height: 180, width: 180),
-                    ))),
+                        color: Colors.transparent,
+                        child: Image.file(
+                          File(image!.path),
+                          fit: BoxFit.cover,
+                          width: 128,
+                          height: 128,
+                        ),
+                      ),
+                    ),
+                  ])),
+          ),
           const SizedBox(height: 24),
           Form(
             key: _signUpKey,
@@ -201,20 +210,19 @@ class _EditarScreenState extends State<EditarScreen> {
       'Apellido': ApellidoController.text,
       'email': emailController.text,
       'telefono': telefonoController.text,
+      // 'img_perfil': imageBase64,
     };
     var _iduser = '${userData['id']}';
 
     var res = await CallApi().putData(data, 'actualizar/', _iduser);
     var body = json.decode(res.body);
     if (body['success']) {
+      var actualizar = await CallApi().getData('perfil');
+      var body = json.decode(actualizar.body);
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('user', json.encode(body['user']));
-      setState(() {});
       Navigator.push(
-          context,
-          new MaterialPageRoute(
-            builder: (context) => Home(),
-          ));
+          context, new MaterialPageRoute(builder: (context) => Home()));
     }
   }
 }

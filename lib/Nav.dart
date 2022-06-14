@@ -71,12 +71,13 @@ class _NavBarState extends State<NavBar> {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.settings, color: Colors.white),
+            leading: const Icon(Icons.password_outlined, color: Colors.white),
             title: const Text(
-              'Opciones',
+              'Cambio de Contraseña',
               style: TextStyle(color: Colors.white),
             ),
-            onTap: () => null,
+            onTap: () => Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => ActualizarPasswordPage())),
           ),
           const Divider(),
           ListTile(

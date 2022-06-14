@@ -70,7 +70,7 @@ class _MyPasswordFieldState extends State<MyPasswordField> {
             padding: const EdgeInsets.only(right: 16),
             child: Container(
               // height: 60,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   right: BorderSide(
                     width: 2,

@@ -48,9 +48,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
               );
             },
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 26),
           Container(
-            height: 450,
+            height: 490,
             decoration: const BoxDecoration(
               color: kSecondaryColor,
               borderRadius: BorderRadius.only(
