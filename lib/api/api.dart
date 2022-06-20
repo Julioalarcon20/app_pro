@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/apirespuesta.dart';
@@ -50,5 +51,9 @@ class CallApi {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var user = localStorage.getString('user');
     return '?user=$user';
+  }
+  String? getStringImage(File? file) {
+    if (file == null) return null;
+    return base64Encode(file.readAsBytesSync());
   }
 }

@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
       var data = {'email': _email.text, 'password': _password.text};
       var res = await CallApi().postData(data, 'login');
       var body = json.decode(res.body);
-      if (body['success'] == false) {
+      if (body['success']==false) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
               "El usuario aun no se encuentra registado o revisa las credenciales ingresadas",

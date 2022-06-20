@@ -20,6 +20,8 @@ class EditarScreen extends StatefulWidget {
 class _EditarScreenState extends State<EditarScreen> {
   final _signUpKey = GlobalKey<FormState>();
   XFile? image;
+  PickedFile? pickedFile;
+  File? _imageFile;
   String imageBase64 = "";
   TextEditingController firstNameController = TextEditingController();
   TextEditingController ApellidoController = TextEditingController();
@@ -210,10 +212,10 @@ class _EditarScreenState extends State<EditarScreen> {
       'Apellido': ApellidoController.text,
       'email': emailController.text,
       'telefono': telefonoController.text,
-      // 'img_perfil': imageBase64,
+      'img_perfil': imageBase64,
     };
+    print(data);
     var _iduser = '${userData['id']}';
-
     var res = await CallApi().putData(data, 'actualizar/', _iduser);
     var body = json.decode(res.body);
     if (body['success']) {

@@ -46,13 +46,13 @@ class _NavBarState extends State<NavBar> {
             ),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
-                child: Image.asset(
-                  'assets/image/perfil/perfil.png',
-                  fit: BoxFit.cover,
-                  width: 90,
-                  height: 90,
+                  child: Ink.image(
+                image: NetworkImage(
+                  userData != null
+                      ? '${userData['img_perfil']}'
+                      : 'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
                 ),
-              ),
+              )),
             ),
             decoration: const BoxDecoration(
               color: kScaffoldBackground,
@@ -76,8 +76,10 @@ class _NavBarState extends State<NavBar> {
               'Cambio de Contraseña',
               style: TextStyle(color: Colors.white),
             ),
-            onTap: () => Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => ActualizarPasswordPage())),
+            onTap: () => Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => ActualizarPasswordPage())),
           ),
           const Divider(),
           ListTile(

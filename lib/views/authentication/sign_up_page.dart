@@ -179,7 +179,7 @@ class _SignUpPageState extends State<SignUpPage> {
         };
         var res = await CallApi().postData(data, 'registro');
         var body = json.decode(res.body);
-
+        print(body);
         if (body['success']) {
           SharedPreferences localStorage =
               await SharedPreferences.getInstance();
