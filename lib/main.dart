@@ -4,8 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maxqui_shop/app_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './views/pages.dart';
-import 'api/api.dart';
-import 'model/apirespuesta.dart';
 
 bool? seenOnboard;
 

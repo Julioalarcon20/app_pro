@@ -41,7 +41,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
         physics: const BouncingScrollPhysics(),
         children: [
           ProfileWidget(
-            imagePath: userData != null ? '${userData['img_perfil']}' : '',
+            imagePath: userData == null
+                ? "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80":
+                '${userData['img_perfil']}',
             onClicked: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => EditarScreen()),

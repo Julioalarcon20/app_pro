@@ -4,6 +4,7 @@ class ProfileWidget extends StatelessWidget {
   final String imagePath;
   final bool iconEdit;
   final VoidCallback onClicked;
+  
 
   const ProfileWidget({
     Key? key,
@@ -31,8 +32,7 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = NetworkImage(
-        'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80');
+    final image = NetworkImage(imagePath);
 
     return ClipOval(
       child: Material(

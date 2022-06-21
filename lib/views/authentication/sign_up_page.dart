@@ -106,9 +106,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         validator: password_confiValidator,
                       ),
                       const MyCheckBox(
-                        text: 'Mantener sesión abierta',
-                      ),
-                      const MyCheckBox(
                         text: 'Aceptar terminos y condiciones de servicio',
                       ),
                       MyTextButton(

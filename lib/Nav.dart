@@ -46,20 +46,22 @@ class _NavBarState extends State<NavBar> {
             ),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
-                  child: Ink.image(
-                image: NetworkImage(
+                child: Image.network(
                   userData != null
                       ? '${userData['img_perfil']}'
-                      : 'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
+                      : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
                 ),
-              )),
+              ),
             ),
             decoration: const BoxDecoration(
               color: kScaffoldBackground,
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: NetworkImage(
-                    'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg'),
+                    'https://cdn.pixabay.com/photo/2016/06/02/02/33/triangles-1430105_960_720.png'),
               ),
             ),
           ),

@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/apirespuesta.dart';
-import '../util/perfil.dart';
 
 class CallApi {
   final String _url = 'http://192.168.1.5:8000/api/';

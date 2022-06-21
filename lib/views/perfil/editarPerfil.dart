@@ -20,8 +20,6 @@ class EditarScreen extends StatefulWidget {
 class _EditarScreenState extends State<EditarScreen> {
   final _signUpKey = GlobalKey<FormState>();
   XFile? image;
-  PickedFile? pickedFile;
-  File? _imageFile;
   String imageBase64 = "";
   TextEditingController firstNameController = TextEditingController();
   TextEditingController ApellidoController = TextEditingController();
@@ -97,8 +95,9 @@ class _EditarScreenState extends State<EditarScreen> {
             },
             child: image == null
                 ? ProfileWidget(
-                    imagePath:
-                        'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
+                    imagePath: userData != null
+                        ? '${userData['img_perfil']}'
+                        : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
                     onClicked: () async {},
                   )
                 : Center(
@@ -214,7 +213,6 @@ class _EditarScreenState extends State<EditarScreen> {
       'telefono': telefonoController.text,
       'img_perfil': imageBase64,
     };
-    print(data);
     var _iduser = '${userData['id']}';
     var res = await CallApi().putData(data, 'actualizar/', _iduser);
     var body = json.decode(res.body);
