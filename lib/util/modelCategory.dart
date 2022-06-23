@@ -1,20 +1,20 @@
 class Category{
   int? id;
-  String? nombrecategorias;
-  String? imgcategorias;
+  String? nombre_categorias;
+  String? img_categorias;
 
   Category({
     this.id,
-    this.nombrecategorias,
-    this.imgcategorias,
+    this.nombre_categorias,
+    this.img_categorias,
   });
 
   //map json to category model
-  factory Category.fromJson(Map<String, dynamic>json){
+  factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
       id:json['id'],
-      nombrecategorias:json['nombre_categorias'],
-      imgcategorias:json['img_categorias'],
+      nombre_categorias:json['nombre_categorias'],
+      img_categorias:json['img_categorias'],
     );
   }
 }

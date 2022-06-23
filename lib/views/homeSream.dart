@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:maxqui_shop/Nav.dart';
-import '../app_styles.dart';
+import 'package:maxqui_shop/views/home_comp/body.dart';
+
+
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -26,12 +28,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.transparent,
       ),
       drawer: NavBar(),
-      body: Center(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {},
-      ),
-      backgroundColor: kScaffoldBackground,
+      body: Body(),
     );
   }
 }
