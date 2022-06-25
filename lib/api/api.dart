@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/apirespuesta.dart';
 import '../util/modelCategory.dart';
+import '../util/modelOffer.dart';
 
 const serverError = 'Server error';
 const unauthorized = 'Unauthorized';
@@ -45,8 +46,7 @@ class CallApi {
     ApiRespuesta apiRespuesta = ApiRespuesta();
     try {
       var fullUrl = _url + apiUrl;
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      var token = localStorage.getString('access_token');
+      String token = await guardarToken();
       final respuesta = await http.get(Uri.parse(fullUrl), headers: {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -60,7 +60,39 @@ class CallApi {
           apiRespuesta.data as List<dynamic>;
           break;
       }
-    } catch (e) {}
+    } catch (e) {
+      apiRespuesta.error = serverError;
+    }
+    return apiRespuesta;
+  }
+
+  Future<ApiRespuesta> getPromocion(apiUrl) async {
+    ApiRespuesta apiRespuesta = ApiRespuesta();
+    try {
+      var fullUrl = _url + apiUrl;
+      var token = await guardarToken();
+      final respuesta = await http.get(Uri.parse(fullUrl), headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      switch (respuesta.statusCode) {
+        case 200:
+          apiRespuesta.data = jsonDecode(respuesta.body)['data']
+              .map((p) => Offer.fromJson(p))
+              .toList();
+          apiRespuesta.data as List<dynamic>;
+          break;
+        case 401:
+          apiRespuesta.error = unauthorized;
+          break;
+        default:
+          apiRespuesta.error = somethingWentWrong;
+          break;
+      }
+    } catch (e) {
+      apiRespuesta.error = serverError;
+    }
     return apiRespuesta;
   }
 
@@ -85,4 +117,9 @@ class CallApi {
     if (file == null) return null;
     return base64Encode(file.readAsBytesSync());
   }
+}
+
+Future<String> guardarToken() async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  return pref.getString('access_token') ?? '';
 }

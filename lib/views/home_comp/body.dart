@@ -19,7 +19,8 @@ class Body extends StatelessWidget {
           const BannerScreen(),
           CategoriaScreen(),
           SizedBox(height: getProportionateScreenWidth(30)),
-          ProductosOferta(),
+          OfertaScreen(),
+          SizedBox(height: getProportionateScreenWidth(30)),
         ]),
       ),
     );

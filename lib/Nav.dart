@@ -109,7 +109,7 @@ class _NavBarState extends State<NavBar> {
     if (body['success']) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.remove('user');
-      localStorage.remove('token');
+      localStorage.remove('access_token');
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => LoginPage()));
     }

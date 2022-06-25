@@ -15,7 +15,6 @@ void main() async {
   // to load onboard for the first time only
   SharedPreferences pref = await SharedPreferences.getInstance();
   seenOnboard = pref.getBool('seenOnboard') ?? false; //if null set to false
-  SharedPreferences comprobar = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 

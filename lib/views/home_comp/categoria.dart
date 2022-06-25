@@ -6,12 +6,15 @@ import '../../util/modelCategory.dart';
 import '../../api/api.dart';
 
 class CategoriaScreen extends StatefulWidget {
+  const CategoriaScreen({Key? key}) : super(key: key);
+
   @override
   _CategoriasState createState() => _CategoriasState();
 }
 
 class _CategoriasState extends State<CategoriaScreen> {
   List<dynamic> categoriaList = [];
+
   Future<void> mostrarCategoria() async {
     ApiRespuesta res = await CallApi().getCategoria('categorias');
     if (res.error == null) {
@@ -103,8 +106,8 @@ class CategoriaChildScrollView extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.topCenter,
                     colors: [
-                      Color.fromARGB(255, 17, 17, 17).withOpacity(0.5),
-                      Color.fromARGB(255, 17, 17, 17).withOpacity(0.5),
+                      const Color.fromARGB(255, 17, 17, 17).withOpacity(0.5),
+                      const Color.fromARGB(255, 17, 17, 17).withOpacity(0.5),
                     ],
                   ),
                 ),
@@ -115,15 +118,17 @@ class CategoriaChildScrollView extends StatelessWidget {
                   vertical: getProportionateScreenWidth(10),
                 ),
                 child: Text.rich(
-                  TextSpan(style: TextStyle(color: kSecondaryColor), children: [
-                    TextSpan(
-                      text: '$category',
-                      style: TextStyle(
-                        fontSize: getProportionateScreenWidth(15),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ]),
+                  TextSpan(
+                      style: const TextStyle(color: kSecondaryColor),
+                      children: [
+                        TextSpan(
+                          text: '$category',
+                          style: TextStyle(
+                            fontSize: getProportionateScreenWidth(15),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ]),
                 ),
               )
             ]),
