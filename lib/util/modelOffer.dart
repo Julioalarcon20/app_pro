@@ -1,20 +1,21 @@
+
 class Offer {
-  num? id;
+  int? id;
   String? nombre;
   String? description;
-  // bool? activo;
   num? precio;
   int? promocion;
-  // int? id_categoria;
+  int? id_categoria;
+ String? url;
 
   Offer({
     this.id,
     this.nombre,
     this.description,
-    // this.activo,
     this.precio,
     this.promocion,
-    // this.id_categoria,
+    this.id_categoria,
+    this.url,
   });
 
   factory Offer.fromJson(Map<String, dynamic> json) {
@@ -22,10 +23,10 @@ class Offer {
       id: json['id'],
       nombre: json['Nombre'],
       description: json['Descripcion'],
-      // activo:json['Activo'],
       precio: json['Precio'],
       promocion: json['promocion'],
-      // id_categoria:json['id_ca'],
+      id_categoria: json['id_ca'],
+      url: json['url_ofertas'],
     );
   }
 }

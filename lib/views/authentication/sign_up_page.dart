@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../app_styles.dart';
-import '../../model/apirespuesta.dart';
 import '../../size_configs.dart';
 import '../../validators.dart';
 import '../pages.dart';
@@ -74,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       MyTextFormField(
                         controller: firstNameController,
-                        fillColor: Color(0xff201753),
+                        fillColor: ktercero,
                         hint: 'Nombre',
                         icon: Icons.person,
                         inputAction: TextInputAction.next,
@@ -86,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           controller: mailController,
                           hint: 'Email',
                           icon: Icons.email_outlined,
-                          fillColor: Color(0xff201753),
+                          fillColor: ktercero,
                           inputType: TextInputType.emailAddress,
                           inputAction: TextInputAction.next,
                           focusNode: _signUpFocusNodes[1],
@@ -94,14 +93,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       MyPasswordField(
                         hint: 'Contraseña',
                         controller: passwordController,
-                        fillColor: Color(0xff201753),
+                        fillColor: ktercero,
                         focusNode: _signUpFocusNodes[2],
                         validator: passwordValidator,
                       ),
                       MyPasswordField(
                         hint: 'Repetir Contraseña',
                         controller: ressController,
-                        fillColor: Color(0xff201753),
+                        fillColor: ktercero,
                         focusNode: _signUpFocusNodes[3],
                         validator: password_confiValidator,
                       ),
@@ -176,15 +175,15 @@ class _SignUpPageState extends State<SignUpPage> {
         };
         var res = await CallApi().postData(data, 'registro');
         var body = json.decode(res.body);
-        print(body);
         if (body['success']) {
           SharedPreferences localStorage =
               await SharedPreferences.getInstance();
           localStorage.setString('access_token', body['access_token']);
           localStorage.setString('user', json.encode(body['user']));
-
-          Navigator.push(
-              context, new MaterialPageRoute(builder: (context) => Home()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) {
+            return new Home();
+          }), (Route<dynamic> route) => false);
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                                             controller: _email,
                                             hint: 'Email',
                                             icon: Icons.email_outlined,
-                                            fillColor: const Color(0xff201753),
+                                            fillColor: ktercero,
                                             inputType:
                                                 TextInputType.emailAddress,
                                             inputAction: TextInputAction.next,
@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                                           MyPasswordField(
                                             hint: 'Contraseña',
                                             controller: _password,
-                                            fillColor: const Color(0xff201753),
+                                            fillColor: ktercero,
                                             focusNode: _loginFocusNodes[1],
                                             validator: passwordValidator,
                                           ),
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                                       Text(
                                         "¿No tienes una cuenta? ",
                                         style: TextStyle(
-                                            color: Color(0xffFC5939),
+                                            color: kPrimaryColor,
                                             fontSize: 20),
                                       ),
                                       SmallTextButton(
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
       var data = {'email': _email.text, 'password': _password.text};
       var res = await CallApi().postData(data, 'login');
       var body = json.decode(res.body);
-      if (body['success']==false) {
+      if (body['success'] == false) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
               "El usuario aun no se encuentra registado o revisa las credenciales ingresadas",
@@ -187,8 +187,11 @@ class _LoginPageState extends State<LoginPage> {
               await SharedPreferences.getInstance();
           localStorage.setString('access_token', body['access_token']);
           localStorage.setString('user', json.encode(body['user']));
-          Navigator.push(
-              context, new MaterialPageRoute(builder: (context) => Home()));
+
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) {
+            return new Home();
+          }), (Route<dynamic> route) => false);
         }
       }
     } else {

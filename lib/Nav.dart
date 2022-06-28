@@ -66,8 +66,8 @@ class _NavBarState extends State<NavBar> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.person, color: Colors.white),
-            title: Text('Perfil', style: TextStyle(color: Colors.white)),
+            leading: const Icon(Icons.person, color: Colors.white),
+            title: const Text('Perfil', style: TextStyle(color: Colors.white)),
             onTap: () => Navigator.push(context,
                 new MaterialPageRoute(builder: (context) => PerfilScreen())),
           ),

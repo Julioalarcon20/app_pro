@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/apirespuesta.dart';
 import '../util/modelCategory.dart';
 import '../util/modelOffer.dart';
-
+String servidor = "http://192.168.1.5:8000";
 const serverError = 'Server error';
 const unauthorized = 'Unauthorized';
 const somethingWentWrong = "Error del servidor";
@@ -66,6 +66,7 @@ class CallApi {
     return apiRespuesta;
   }
 
+  
   Future<ApiRespuesta> getPromocion(apiUrl) async {
     ApiRespuesta apiRespuesta = ApiRespuesta();
     try {
