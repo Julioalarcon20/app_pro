@@ -4,6 +4,7 @@ import '../../model/apirespuesta.dart';
 import '../../size_configs.dart';
 import '../../util/modelCategory.dart';
 import '../../api/api.dart';
+import '../productos/items.dart';
 
 class CategoriaScreen extends StatefulWidget {
   const CategoriaScreen({Key? key}) : super(key: key);
@@ -60,10 +61,17 @@ class _CategoriasState extends State<CategoriaScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     Category categoria = categoriaList[index];
                     return CategoriaChildScrollView(
-                      image: "http://192.168.1.5:8000" +
-                          '${categoria.img_categorias}',
+                      image: '${servidor}' + '${categoria.img_categorias}',
                       category: '${categoria.nombre_categorias}',
-                      press: () {},
+                      press: () {
+                        String nombre_c = categoria.nombre_categorias!;
+                        int id = categoria.id!;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Productos(id, nombre_c)),
+                        );
+                      },
                     );
                   }),
             )

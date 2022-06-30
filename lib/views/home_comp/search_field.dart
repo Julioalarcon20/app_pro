@@ -10,7 +10,8 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: SizeConfig.screenWidth! * 0.6,
+      width: SizeConfig.screenWidth! * 0.8,
+      height: 50,
       decoration: BoxDecoration(
         color: ktercero,
         borderRadius: BorderRadius.circular(15),
@@ -30,11 +31,12 @@ class SearchField extends StatelessWidget {
             enabledBorder: InputBorder.none,
             hintText: "Buscar Producto",
             fillColor: kSecondaryColor,
-            hintStyle:  TextStyle(
+            hintStyle: TextStyle(
+              fontSize: 17,
               color: kSecondaryColor.withOpacity(0.5),
-              
             ),
-            prefixIcon: Icon(Icons.search, color: kSecondaryColor.withOpacity(0.5))),
+            prefixIcon:
+                const Icon(Icons.search, size: 20, color: kSecondaryColor)),
       ),
     );
   }

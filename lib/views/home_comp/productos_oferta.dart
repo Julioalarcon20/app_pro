@@ -5,6 +5,7 @@ import 'package:maxqui_shop/views/home_comp/section_titulos.dart';
 import '../../app_styles.dart';
 import '../../size_configs.dart';
 import '../../util/modelOffer.dart';
+import '../ofertas/detallesOfertas.dart';
 
 class OfertaScreen extends StatefulWidget {
   const OfertaScreen({Key? key}) : super(key: key);
@@ -49,7 +50,7 @@ class _OfertasState extends State<OfertaScreen> {
             SizedBox(
               height: 210,
               child: ofertaList.length == 0
-                  ? Text(
+                  ? const Text(
                       "No existe ninguna oferta",
                       style: TextStyle(
                         color: kSecondaryColor,
@@ -63,9 +64,15 @@ class _OfertasState extends State<OfertaScreen> {
                         return OfertasCard(
                           titulo1: '${oferta.nombre}',
                           url: servidor + "${oferta.url}",
-                          precio: '\$ ${oferta.precio}',
+                          precio: '\$ ${oferta.precio?.toStringAsFixed(2)}',
                           promocion: '${oferta.promocion}\%',
-                          pass: () {},
+                          pass: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => detalleOfertas(oferta)),
+                            );
+                          },
                         );
                       }),
             )
@@ -100,7 +107,7 @@ class OfertasCard extends StatelessWidget {
       child: SizedBox(
         width: getProportionateScreenWidth(width),
         child: GestureDetector(
-            onTap: () => pass,
+            onTap: pass,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -113,13 +120,20 @@ class OfertasCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                     ),
                     // img_Productos
-                    child: Image.network(url),
+                    child: Image.network(
+                      url,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   titulo1,
-                  style: const TextStyle(color: kSecondaryColor),
+                  style: TextStyle(
+                    fontSize: getProportionateScreenWidth(14),
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.normal,
+                  ),
                   maxLines: 2,
                 ),
                 Row(
@@ -129,15 +143,16 @@ class OfertasCard extends StatelessWidget {
                       precio,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(14),
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                         color: kPrimaryColor,
                       ),
                     ),
+                    const SizedBox(height: 12),
                     Text(
                       promocion,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(14),
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                         color: kPrimaryColor,
                       ),
                     ),

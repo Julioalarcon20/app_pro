@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
+//modelos
 import '../model/apirespuesta.dart';
 import '../util/modelCategory.dart';
 import '../util/modelOffer.dart';
+import '../util/modelProduct.dart';
+
 String servidor = "http://192.168.1.5:8000";
 const serverError = 'Server error';
 const unauthorized = 'Unauthorized';
@@ -66,7 +68,6 @@ class CallApi {
     return apiRespuesta;
   }
 
-  
   Future<ApiRespuesta> getPromocion(apiUrl) async {
     ApiRespuesta apiRespuesta = ApiRespuesta();
     try {
@@ -89,6 +90,30 @@ class CallApi {
           break;
         default:
           apiRespuesta.error = somethingWentWrong;
+          break;
+      }
+    } catch (e) {
+      apiRespuesta.error = serverError;
+    }
+    return apiRespuesta;
+  }
+
+  Future<ApiRespuesta> getProductos(apiUrl, id) async {
+    ApiRespuesta apiRespuesta = ApiRespuesta();
+    try {
+      var fullUrl = _url + apiUrl + id;
+      String token = await guardarToken();
+      final respuesta = await http.get(Uri.parse(fullUrl), headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      switch (respuesta.statusCode) {
+        case 200:
+          apiRespuesta.data = jsonDecode(respuesta.body)['data']
+              .map((p) => Product.fromJson(p))
+              .toList();
+          apiRespuesta.data as List<dynamic>;
           break;
       }
     } catch (e) {

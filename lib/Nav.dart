@@ -66,6 +66,13 @@ class _NavBarState extends State<NavBar> {
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.home, color: Colors.white),
+            title: const Text('Home', style: TextStyle(color: Colors.white)),
+            onTap: () => Navigator.push(
+                context, new MaterialPageRoute(builder: (context) => Home())),
+          ),
+          const Divider(),
+          ListTile(
             leading: const Icon(Icons.person, color: Colors.white),
             title: const Text('Perfil', style: TextStyle(color: Colors.white)),
             onTap: () => Navigator.push(context,
@@ -110,8 +117,11 @@ class _NavBarState extends State<NavBar> {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.remove('user');
       localStorage.remove('access_token');
-      Navigator.push(
-          context, new MaterialPageRoute(builder: (context) => LoginPage()));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) {
+        return new LoginPage();
+      }), (Route<dynamic> route) => false);
+      ;
     }
   }
 }
