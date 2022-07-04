@@ -108,9 +108,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         text: 'Aceptar terminos y condiciones de servicio',
                       ),
                       MyTextButton(
-                        buttonName: 'Crear cuenta',
+                        buttonName: _isLoading ? 'Cargando...' :  'Crear cuenta',
                         onPressed: () => {
-                          _isLoading ? null : onSubmit(),
+                           onSubmit(),
                         },
                         bgColor: kPrimaryColor,
                       ),
@@ -164,6 +164,9 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   onSubmit() async {
+    setState(() {
+      _isLoading = true;
+    });
     // _signUpKey.currentState!.validate();
     if (_signUpKey.currentState!.validate()) {
       if (passwordController.text == ressController.text) {
@@ -195,5 +198,8 @@ class _SignUpPageState extends State<SignUpPage> {
     } else {
       _signUpKey.currentState!.validate();
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

@@ -6,6 +6,7 @@ import '../../app_styles.dart';
 import '../../size_configs.dart';
 import '../../util/modelOffer.dart';
 import '../ofertas/detallesOfertas.dart';
+import '../ofertas/listaOferta.dart';
 
 class OfertaScreen extends StatefulWidget {
   const OfertaScreen({Key? key}) : super(key: key);
@@ -40,7 +41,12 @@ class _OfertasState extends State<OfertaScreen> {
             EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: SecionTitulo(
           titulo: "Productos en oferta",
-          press: () {},
+          press: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OfertasListas()),
+            );
+          },
         ),
       ),
       SizedBox(height: getProportionateScreenWidth(20)),
@@ -49,11 +55,13 @@ class _OfertasState extends State<OfertaScreen> {
           children: [
             SizedBox(
               height: 210,
-              child: ofertaList.length == 0
-                  ? const Text(
-                      "No existe ninguna oferta",
-                      style: TextStyle(
-                        color: kSecondaryColor,
+              child: ofertaList.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "No existe ninguna oferta",
+                        style: TextStyle(
+                          color: kSecondaryColor,
+                        ),
                       ),
                     )
                   : ListView.builder(

@@ -18,6 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _isLoading = false;
   final _loginKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -108,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                                             validator: passwordValidator,
                                           ),
                                           MyTextButton(
-                                            buttonName: 'Iniciar sesión',
+                                            buttonName:                                         _isLoading? 'Cargando...' : 'Inicio de Sesión',
                                             onPressed: onSubmit,
                                             bgColor: kPrimaryColor,
                                           ),
@@ -170,6 +171,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   onSubmit() async {
+      setState(() {
+       _isLoading = true;
+    });
+
     if (_loginKey.currentState!.validate()) {
       var data = {'email': _email.text, 'password': _password.text};
       var res = await CallApi().postData(data, 'login');
@@ -197,5 +202,8 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       _loginKey.currentState!.validate();
     }
+    setState(() {
+       _isLoading = false;
+    });
   }
 }

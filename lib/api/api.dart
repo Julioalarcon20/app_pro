@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //modelos
 import '../model/apirespuesta.dart';
@@ -10,6 +11,7 @@ import '../util/modelProduct.dart';
 
 String servidor = "http://192.168.1.5:8000";
 const serverError = 'Server error';
+const datosVacios = "No existe datos";
 const unauthorized = 'Unauthorized';
 const somethingWentWrong = "Error del servidor";
 
@@ -122,6 +124,30 @@ class CallApi {
     return apiRespuesta;
   }
 
+  Future<ApiRespuesta> getListaPromocion(apiUrl) async {
+    ApiRespuesta apiRespuesta = ApiRespuesta();
+    try {
+      var fullUrl = _url + apiUrl;
+      String token = await guardarToken();
+      final respuesta = await http.get(Uri.parse(fullUrl), headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      switch (respuesta.statusCode) {
+        case 200:
+          apiRespuesta.data = jsonDecode(respuesta.body)['data']
+              .map((p) => Offer.fromJson(p))
+              .toList();
+          apiRespuesta.data as List<dynamic>;
+          break;
+      }
+    } catch (e) {
+      apiRespuesta.error = serverError;
+    }
+    return apiRespuesta;
+  }
+
   _setHeaders() => {
         'Content-type': 'application/json',
         'Accept': 'application/json',
@@ -142,6 +168,59 @@ class CallApi {
   String? getStringImage(File? file) {
     if (file == null) return null;
     return base64Encode(file.readAsBytesSync());
+  }
+
+  Future<ApiRespuesta> getBuscarProductos(apiUrl, name) async {
+    ApiRespuesta apiRespuesta = ApiRespuesta();
+    try {
+      var fullUrl = _url + apiUrl + name;
+      String token = await guardarToken();
+      final respuesta = await http.get(Uri.parse(fullUrl), headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      switch (respuesta.statusCode) {
+        case 200:
+          apiRespuesta.data = jsonDecode(respuesta.body)['data']
+              .map((p) => Product.fromJson(p))
+              .toList();
+          apiRespuesta.data as List<dynamic>;
+          break;
+        case 204:
+          apiRespuesta.error = datosVacios;
+          break;
+      }
+    } catch (e) {
+      apiRespuesta.error = serverError;
+    }
+    return apiRespuesta;
+  }
+    Future<ApiRespuesta> getBuscarOfertas(apiUrl, name) async {
+    ApiRespuesta apiRespuesta = ApiRespuesta();
+    try {
+      var fullUrl = _url + apiUrl + name;
+      String token = await guardarToken();
+      final respuesta = await http.get(Uri.parse(fullUrl), headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      });
+      switch (respuesta.statusCode) {
+        case 200:
+          apiRespuesta.data = jsonDecode(respuesta.body)['data']
+              .map((p) => Offer.fromJson(p))
+              .toList();
+          apiRespuesta.data as List<dynamic>;
+          break;
+        case 204:
+          apiRespuesta.error = datosVacios;
+          break;
+      }
+    } catch (e) {
+      apiRespuesta.error = serverError;
+    }
+    return apiRespuesta;
   }
 }
 

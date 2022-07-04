@@ -1,56 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:maxqui_shop/util/modelOffer.dart';
 
 import '../../api/api.dart';
 import '../../app_styles.dart';
 import '../../model/apirespuesta.dart';
 import '../../size_configs.dart';
-import '../../util/modelProduct.dart';
-import '../../widgets/searchProduct.dart';
+import '../../widgets/searchOfertas.dart';
 import '../home_comp/search_field.dart';
-import 'detalle.dart';
+import 'detallesOfertas.dart';
 
-class Productos extends StatefulWidget {
-  int id;
-  String nombre_c;
-  Productos(this.id, this.nombre_c, {Key? key}) : super(key: key);
+class OfertasListas extends StatefulWidget {
+  OfertasListas({Key? key}) : super(key: key);
 
   @override
-  State<Productos> createState() => _ProductosState();
+  State<OfertasListas> createState() => _OfertasState();
 }
 
-class _ProductosState extends State<Productos> {
-  List<dynamic> productosList = [];
+class _OfertasState extends State<OfertasListas> {
+  List<dynamic> ofertasList = [];
 
-  Future<void> mostrarProductos() async {
-    ApiRespuesta res =
-        await CallApi().getProductos('productos/', '${widget.id}');
+  Future<void> mostrarOfertas() async {
+    ApiRespuesta res = await CallApi().getListaPromocion('listaOfertas');
     if (res.error == null) {
       setState(() {
-        productosList = res.data as List<dynamic>;
+        ofertasList = res.data as List<dynamic>;
       });
     }
   }
 
   @override
   void initState() {
-    mostrarProductos();
+    mostrarOfertas();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    double height = SizeConfig.blockSizeV!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(widget.nombre_c),
+        title: const Text("Lista de ofertas"),
         elevation: 0,
         actions: <Widget>[
           IconButton(
               onPressed: () {
                 showSearch(
                   context: context,
-                  delegate: ProductosSearchDelegate('Buscar...'),
+                  delegate: OfertasSearchDelegate('Buscar...'),
                 );
               },
               icon: const Icon(Icons.search, color: Colors.white))
@@ -81,7 +77,7 @@ class _ProductosState extends State<Productos> {
             children: [
               const SizedBox(height: 15),
               const Text(
-                "Todos los productos",
+                "Todos los Ofertas Disponibles",
                 style: TextStyle(
                   color: kPrimaryColor,
                   fontSize: 20,
@@ -91,10 +87,9 @@ class _ProductosState extends State<Productos> {
               const SizedBox(height: 15),
               Expanded(
                 child: ListView.builder(
-                  itemCount: productosList.length,
+                  itemCount: ofertasList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    Product items = productosList[index];
-                    print(items.empresa?.Nombre_empre);
+                    Offer items = ofertasList[index];
                     return Container(
                       height: 170,
                       padding: const EdgeInsets.all(10),
@@ -119,7 +114,7 @@ class _ProductosState extends State<Productos> {
                           ),
                           Expanded(
                               child: Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -151,7 +146,7 @@ class _ProductosState extends State<Productos> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    detalleProducto(items)),
+                                                    detalleOfertas(items)),
                                           );
                                         },
                                         child: Container(

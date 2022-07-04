@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:maxqui_shop/Nav.dart';
 import 'package:maxqui_shop/views/home_comp/body.dart';
 
-
+import '../util/modelProduct.dart';
+import '../widgets/searchProduct.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -21,14 +22,25 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<Product> historia = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: ProductosSearchDelegate('Buscar...'),
+                );
+              },
+              icon: const Icon(Icons.search, color: Colors.white))
+        ],
       ),
       drawer: NavBar(),
-      body: Body(),
+      body: const Body(),
     );
   }
 }

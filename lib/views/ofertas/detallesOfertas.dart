@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../util/modelOffer.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
 import '../../api/api.dart';
 import '../../app_styles.dart';
@@ -62,7 +64,7 @@ class _detalleOfertasState extends State<detalleOfertas> {
           ),
 
           Padding(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -116,6 +118,31 @@ class _detalleOfertasState extends State<detalleOfertas> {
                         ),
                       ),
                     ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Emprendimiento:',
+                        style: TextStyle(
+                          color: kPrimaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: getProportionateScreenWidth(15),
+                          letterSpacing: 1,
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '${widget.oferta.empresa?.Nombre_empre}',
+                        style: TextStyle(
+                          color: kSecondaryColor,
+                          fontSize: getProportionateScreenWidth(14),
+                          letterSpacing: 1,
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -129,8 +156,8 @@ class _detalleOfertasState extends State<detalleOfertas> {
           ),
 
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            margin: EdgeInsets.symmetric(vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.symmetric(vertical: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -146,19 +173,30 @@ class _detalleOfertasState extends State<detalleOfertas> {
                     ),
                   ),
                 ),
-                Container(
-                  height: 50,
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: const Text(
-                    "Pedir",
-                    style: TextStyle(
-                      color: kSecondaryColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                ElevatedButton(
+                  onPressed: () async {
+                    final link = WhatsAppUnilink(
+                      phoneNumber: '${widget.oferta.empresa?.telefono}',
+                      text: "Producto: ${widget.oferta.nombre}" +
+                          "\n Precio: \$${widget.oferta.precio?.toStringAsFixed(2)}" +
+                          "\n Vi esto en MaxquiShpo",
+                    );
+                    await launch('$link');
+                  },
+                  child: Container(
+                    height: 50,
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: const Text(
+                      "Pedelo Ya!",
+                      style: TextStyle(
+                        color: kSecondaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
