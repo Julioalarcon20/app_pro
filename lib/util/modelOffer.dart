@@ -8,6 +8,7 @@ class Offer {
   int? promocion;
   int? id_categoria;
   String? url;
+  String? fecha;
   Empresa? empresa;
 
   Offer({
@@ -18,6 +19,7 @@ class Offer {
     this.promocion,
     this.id_categoria,
     this.url,
+    this.fecha,
     this.empresa,
   });
 
@@ -30,6 +32,7 @@ class Offer {
       promocion: json['promocion'],
       id_categoria: json['id_ca'],
       url: json['url_ofertas'],
+      fecha: json['fecha'],
       empresa: Empresa(
           Nombre_empre: json['negocio']['Nombre_empre'],
           telefono: json['negocio']['telefono'],

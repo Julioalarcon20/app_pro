@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../api/api.dart';
 import '../../app_styles.dart';
 import '../../size_configs.dart';
 import '../../validators.dart';
@@ -17,10 +20,6 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _forgotPassKey = GlobalKey<FormState>();
   final email = TextEditingController();
-
-  void _onSumbit() {
-    _forgotPassKey.currentState!.validate();
-  }
 
   FocusNode focusNode1 = FocusNode();
 
@@ -135,5 +134,28 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ],
       ),
     );
+  }
+  _onSumbit()async{
+     if (_forgotPassKey.currentState!.validate()) {
+      var data={'email': email.text};
+      var res = await CallApi().postData(data, 'forgot-password');
+      var body = json.decode(res.body);
+       if (body['success'] == false) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              "El correo ingresado no existe",
+              style: TextStyle(color: kSecondaryColor)),
+          backgroundColor: kPrimaryColor,
+        ));
+       }else{
+         Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) {
+            return new ResetPasswordPage();
+          }), (Route<dynamic> route) => false);
+       }
+     }else{
+       _forgotPassKey.currentState!.validate();
+     }
+
   }
 }

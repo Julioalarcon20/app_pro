@@ -17,14 +17,17 @@ class OfertaScreen extends StatefulWidget {
 
 class _OfertasState extends State<OfertaScreen> {
   List<dynamic> ofertaList = [];
+  late bool _isLoading;
 
   Future<void> mostrarOfertas() async {
+    _isLoading = true;
     ApiRespuesta res = await CallApi().getPromocion('ofertas');
     if (res.error == null) {
       setState(() {
         ofertaList = res.data as List<dynamic>;
       });
     }
+    _isLoading = false;
   }
 
   @override
@@ -55,13 +58,11 @@ class _OfertasState extends State<OfertaScreen> {
           children: [
             SizedBox(
               height: 210,
-              child: ofertaList.isEmpty
+              child: _isLoading
                   ? const Center(
-                      child: Text(
-                        "No existe ninguna oferta",
-                        style: TextStyle(
-                          color: kSecondaryColor,
-                        ),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: kPrimaryColor,
                       ),
                     )
                   : ListView.builder(
@@ -69,19 +70,31 @@ class _OfertasState extends State<OfertaScreen> {
                       itemCount: ofertaList.length,
                       itemBuilder: (BuildContext context, int index) {
                         Offer oferta = ofertaList[index];
-                        return OfertasCard(
-                          titulo1: '${oferta.nombre}',
-                          url: servidor + "${oferta.url}",
-                          precio: '\$ ${oferta.precio?.toStringAsFixed(2)}',
-                          promocion: '${oferta.promocion}\%',
-                          pass: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => detalleOfertas(oferta)),
-                            );
-                          },
-                        );
+                        if (ofertaList.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              "No existe ninguna oferta",
+                              style: TextStyle(
+                                color: kSecondaryColor,
+                              ),
+                            ),
+                          );
+                        } else {
+                          return OfertasCard(
+                            titulo1: '${oferta.nombre}',
+                            url: servidor + "${oferta.url}",
+                            precio: '\$ ${oferta.precio?.toStringAsFixed(2)}',
+                            promocion: '${oferta.promocion}\%',
+                            pass: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        detalleOfertas(oferta)),
+                              );
+                            },
+                          );
+                        }
                       }),
             )
           ],

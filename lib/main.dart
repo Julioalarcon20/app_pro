@@ -48,14 +48,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          textTheme: GoogleFonts.mulishTextTheme(
-            Theme.of(context).textTheme,
-          ),
-          primarySwatch: myColour,
-          scaffoldBackgroundColor: kScaffoldBackground,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        textTheme: GoogleFonts.mulishTextTheme(
+          Theme.of(context).textTheme,
         ),
-        home: seenOnboard == true ? SignUpPage() : const OnBoardingPage());
+        primarySwatch: myColour,
+        scaffoldBackgroundColor: kScaffoldBackground,
+      ),
+      home: seenOnboard == true ? const SignUpPage() : const OnBoardingPage(),
+    );
   }
 }

@@ -20,8 +20,10 @@ class Productos extends StatefulWidget {
 
 class _ProductosState extends State<Productos> {
   List<dynamic> productosList = [];
+  late bool _isLoading;
 
   Future<void> mostrarProductos() async {
+    _isLoading = true;
     ApiRespuesta res =
         await CallApi().getProductos('productos/', '${widget.id}');
     if (res.error == null) {
@@ -29,6 +31,7 @@ class _ProductosState extends State<Productos> {
         productosList = res.data as List<dynamic>;
       });
     }
+    _isLoading = false;
   }
 
   @override
@@ -90,98 +93,109 @@ class _ProductosState extends State<Productos> {
               ),
               const SizedBox(height: 15),
               Expanded(
-                child: ListView.builder(
-                  itemCount: productosList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Product items = productosList[index];
-                    print(items.empresa?.Nombre_empre);
-                    return Container(
-                      height: 170,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: ktercero,
-                          borderRadius: BorderRadius.circular(15)),
-                      margin: const EdgeInsets.only(bottom: 15),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 160,
-                            width: 150,
-                            padding: const EdgeInsets.all(5),
+                child: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: kPrimaryColor,
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: productosList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Product items = productosList[index];
+                          print(items.empresa?.Nombre_empre);
+                          return Container(
+                            height: 170,
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: kScaffoldBackground,
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image:
-                                      NetworkImage(servidor + '${items.url}')),
-                            ),
-                          ),
-                          Expanded(
-                              child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                color: ktercero,
+                                borderRadius: BorderRadius.circular(15)),
+                            margin: const EdgeInsets.only(bottom: 15),
+                            child: Row(
                               children: [
-                                Text(
-                                  '${items.nombre}',
-                                  style: const TextStyle(
-                                    color: kSecondaryColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.normal,
+                                Container(
+                                  height: 160,
+                                  width: 150,
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: kScaffoldBackground,
+                                    borderRadius: BorderRadius.circular(15),
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(
+                                            servidor + '${items.url}')),
                                   ),
-                                  maxLines: 1,
                                 ),
-                                Text(
-                                  '\$ ${items.precio?.toStringAsFixed(2)}',
-                                  style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontSize: getProportionateScreenWidth(15),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  maxLines: 1,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    detalleProducto(items)),
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 35,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            color: kPrimaryColor,
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: const Text(
-                                            "Ver más",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
+                                Expanded(
+                                    child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Text(
+                                        '${items.nombre}',
+                                        style: const TextStyle(
+                                          color: kSecondaryColor,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                      Text(
+                                        '\$ ${items.precio?.toStringAsFixed(2)}',
+                                        style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontSize:
+                                              getProportionateScreenWidth(15),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          detalleProducto(
+                                                              items)),
+                                                );
+                                              },
+                                              child: Container(
+                                                height: 35,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  color: kPrimaryColor,
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: const Text(
+                                                  "Ver más",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
+                                ))
                               ],
                             ),
-                          ))
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
             ],
           ),

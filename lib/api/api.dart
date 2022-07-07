@@ -23,6 +23,11 @@ class CallApi {
     return await http.post(Uri.parse(fullUrl),
         body: jsonEncode(data), headers: _setHeaders());
   }
+    postEmail(data, apiUrl) async {
+    var fullUrl = _url + apiUrl + await getToken();
+    return await http.post(Uri.parse(fullUrl),
+        body: jsonEncode(data), headers: _setHeaders());
+  }
 
   putData(data, apiUrl, id) async {
     var fullUrl = _url + apiUrl + id;

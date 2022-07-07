@@ -15,9 +15,9 @@ class Body extends StatelessWidget {
         child: Column(children: [
           SizedBox(height: getProportionateScreenWidth(20)),
           const BannerScreen(),
-          CategoriaScreen(),
+          const CategoriaScreen(),
           SizedBox(height: getProportionateScreenWidth(30)),
-          OfertaScreen(),
+          const OfertaScreen(),
           SizedBox(height: getProportionateScreenWidth(10)),
         ]),
       ),

@@ -6,3 +6,4 @@ export './authentication/forgot_password_page.dart';
 export '../views/perfil/PerfilUsuario.dart';
 export '../views/perfil/editarPerfil.dart';
 export './authentication/cambio_password.dart';
+export './authentication/resetPassword.dart';

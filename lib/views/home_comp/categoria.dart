@@ -15,14 +15,17 @@ class CategoriaScreen extends StatefulWidget {
 
 class _CategoriasState extends State<CategoriaScreen> {
   List<dynamic> categoriaList = [];
+  late bool _isLoading;
 
   Future<void> mostrarCategoria() async {
+    _isLoading = true;
     ApiRespuesta res = await CallApi().getCategoria('categorias');
     if (res.error == null) {
       setState(() {
         categoriaList = res.data as List<dynamic>;
       });
     }
+    _isLoading = false;
   }
 
   @override
@@ -55,25 +58,33 @@ class _CategoriasState extends State<CategoriaScreen> {
           children: [
             SizedBox(
               height: 180,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categoriaList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Category categoria = categoriaList[index];
-                    return CategoriaChildScrollView(
-                      image: '${servidor}' + '${categoria.img_categorias}',
-                      category: '${categoria.nombre_categorias}',
-                      press: () {
-                        String nombre_c = categoria.nombre_categorias!;
-                        int id = categoria.id!;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Productos(id, nombre_c)),
+              child: _isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: kPrimaryColor,
+                      ),
+                    )
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categoriaList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Category categoria = categoriaList[index];
+                        return CategoriaChildScrollView(
+                          image: '${servidor}' + '${categoria.img_categorias}',
+                          category: '${categoria.nombre_categorias}',
+                          press: () {
+                            String nombre_c = categoria.nombre_categorias!;
+                            int id = categoria.id!;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Productos(id, nombre_c)),
+                            );
+                          },
                         );
-                      },
-                    );
-                  }),
+                      }),
             )
           ],
         ),

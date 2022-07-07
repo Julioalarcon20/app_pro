@@ -79,6 +79,23 @@ class _detalleOfertasState extends State<detalleOfertas> {
                     maxLines: 2,
                   ),
                 ),
+                Container(
+                    height: 35,
+                    width: 35,
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${widget.oferta.promocion}%',
+                        style: const TextStyle(
+                          color: kSecondaryColor,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
               ],
             ),
           ),
@@ -118,30 +135,65 @@ class _detalleOfertasState extends State<detalleOfertas> {
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Emprendimiento:',
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: getProportionateScreenWidth(15),
-                          letterSpacing: 1,
-                          height: 1.4,
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Emprendimiento: ',
+                            style: TextStyle(
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: getProportionateScreenWidth(15),
+                              letterSpacing: 1,
+                              height: 1.4,
+                            ),
+                          ),
                         ),
-                      ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${widget.oferta.empresa?.Nombre_empre}',
+                            style: TextStyle(
+                              color: kSecondaryColor,
+                              fontSize: getProportionateScreenWidth(14),
+                              letterSpacing: 1,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${widget.oferta.empresa?.Nombre_empre}',
-                        style: TextStyle(
-                          color: kSecondaryColor,
-                          fontSize: getProportionateScreenWidth(14),
-                          letterSpacing: 1,
-                          height: 1.4,
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Oferta Valida hasta: ',
+                            style: TextStyle(
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: getProportionateScreenWidth(15),
+                              letterSpacing: 1,
+                              height: 1.4,
+                            ),
+                          ),
                         ),
-                      ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${widget.oferta.fecha}',
+                            style: TextStyle(
+                              color: kSecondaryColor,
+                              fontSize: getProportionateScreenWidth(14),
+                              letterSpacing: 1,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -157,7 +209,7 @@ class _detalleOfertasState extends State<detalleOfertas> {
 
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            margin: const EdgeInsets.symmetric(vertical: 15),
+            margin: const EdgeInsets.symmetric(vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -168,7 +220,7 @@ class _detalleOfertasState extends State<detalleOfertas> {
                     "Precio : \$${widget.oferta.precio!.toStringAsFixed(2)}",
                     style: const TextStyle(
                       color: kSecondaryColor,
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -184,8 +236,8 @@ class _detalleOfertasState extends State<detalleOfertas> {
                     await launch('$link');
                   },
                   child: Container(
-                    height: 50,
-                    padding: const EdgeInsets.all(15),
+                    height: 40,
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: kPrimaryColor,
                       borderRadius: BorderRadius.circular(15),

@@ -48,6 +48,7 @@ class _detalleProductoState extends State<detalleProducto> {
                   ],
                 ),
                 // Imagen principal del detalle de productos
+
                 Expanded(
                   child: Container(
                     alignment: Alignment.center,
@@ -61,9 +62,8 @@ class _detalleProductoState extends State<detalleProducto> {
               ],
             ),
           ),
-
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -83,67 +83,68 @@ class _detalleProductoState extends State<detalleProducto> {
           ),
 
           //Texto de la descripcion del producto
-          Container(
-            child: Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                ),
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Descripcion del Producto:',
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: getProportionateScreenWidth(15),
-                          letterSpacing: 1,
-                          height: 1.4,
-                        ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+              ),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Descripcion del Producto:',
+                      style: TextStyle(
+                        color: kPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: getProportionateScreenWidth(15),
+                        letterSpacing: 1,
+                        height: 1.4,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${widget.items.description}',
-                        style: TextStyle(
-                          color: kSecondaryColor,
-                          fontSize: getProportionateScreenWidth(14),
-                          letterSpacing: 1,
-                          height: 1.4,
-                        ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '${widget.items.description}',
+                      style: TextStyle(
+                        color: kSecondaryColor,
+                        fontSize: getProportionateScreenWidth(14),
+                        letterSpacing: 1,
+                        height: 1.4,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Emprendimiento:',
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: getProportionateScreenWidth(15),
-                          letterSpacing: 1,
-                          height: 1.4,
+                  ),
+                  Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Emprendimiento:',
+                          style: TextStyle(
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: getProportionateScreenWidth(15),
+                            letterSpacing: 1,
+                            height: 1.4,
+                          ),
                         ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${widget.items.empresa?.Nombre_empre}',
-                        style: TextStyle(
-                          color: kSecondaryColor,
-                          fontSize: getProportionateScreenWidth(14),
-                          letterSpacing: 1,
-                          height: 1.4,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '${widget.items.empresa?.Nombre_empre}',
+                          style: TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: getProportionateScreenWidth(14),
+                            letterSpacing: 1,
+                            height: 1.4,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
@@ -154,8 +155,8 @@ class _detalleProductoState extends State<detalleProducto> {
           ),
 
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            margin: EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.symmetric(vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -166,7 +167,7 @@ class _detalleProductoState extends State<detalleProducto> {
                     "Precio : \$${widget.items.precio!.toStringAsFixed(2)}",
                     style: const TextStyle(
                       color: kSecondaryColor,
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
