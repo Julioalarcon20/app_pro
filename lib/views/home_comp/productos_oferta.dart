@@ -17,6 +17,7 @@ class OfertaScreen extends StatefulWidget {
 
 class _OfertasState extends State<OfertaScreen> {
   List<dynamic> ofertaList = [];
+  String? error;
   late bool _isLoading;
 
   Future<void> mostrarOfertas() async {
@@ -25,6 +26,10 @@ class _OfertasState extends State<OfertaScreen> {
     if (res.error == null) {
       setState(() {
         ofertaList = res.data as List<dynamic>;
+      });
+    } else {
+      setState(() {
+        error = res.error;
       });
     }
     _isLoading = false;
@@ -57,46 +62,45 @@ class _OfertasState extends State<OfertaScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 210,
-              child: _isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: kPrimaryColor,
-                      ),
-                    )
-                  : ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: ofertaList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        Offer oferta = ofertaList[index];
-                        if (ofertaList.isEmpty) {
-                          return const Center(
+                height: 210,
+                child: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: kPrimaryColor,
+                        ),
+                      )
+                    : error != null
+                        ? const Center(
                             child: Text(
                               "No existe ninguna oferta",
                               style: TextStyle(
                                 color: kSecondaryColor,
                               ),
                             ),
-                          );
-                        } else {
-                          return OfertasCard(
-                            titulo1: '${oferta.nombre}',
-                            url: servidor + "${oferta.url}",
-                            precio: '\$ ${oferta.precio?.toStringAsFixed(2)}',
-                            promocion: '${oferta.promocion}\%',
-                            pass: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        detalleOfertas(oferta)),
+                          )
+                        : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: ofertaList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Offer oferta = ofertaList[index];
+                              return OfertasCard(
+                                titulo1: '${oferta.nombre}',
+                                url: servidor + "${oferta.url}",
+                                precio:
+                                    '\$ ${oferta.precio?.toStringAsFixed(2)}',
+                                promocion: '${oferta.promocion}%',
+                                pass: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          detalleOfertas(oferta),
+                                    ),
+                                  );
+                                },
                               );
-                            },
-                          );
-                        }
-                      }),
-            )
+                            }))
           ],
         ),
       )

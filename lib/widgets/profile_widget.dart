@@ -4,7 +4,6 @@ class ProfileWidget extends StatelessWidget {
   final String imagePath;
   final bool iconEdit;
   final VoidCallback onClicked;
-  
 
   const ProfileWidget({
     Key? key,
@@ -55,7 +54,7 @@ class ProfileWidget extends StatelessWidget {
           color: color,
           all: 8,
           child: Icon(
-            iconEdit ? Icons.add_a_photo : Icons.edit,
+            iconEdit? Icons.add_a_photo : Icons.edit,
             color: Colors.white,
             size: 20,
           ),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 //modelos
 import '../model/apirespuesta.dart';
@@ -9,21 +8,27 @@ import '../util/modelCategory.dart';
 import '../util/modelOffer.dart';
 import '../util/modelProduct.dart';
 
-String servidor = "http://192.168.1.5:8000";
+String servidor = "https://maxqui.store";
+// Servidor Local
+// String servidor = "http://192.168.1.5:8000";
 const serverError = 'Server error';
 const datosVacios = "No existe datos";
 const unauthorized = 'Unauthorized';
 const somethingWentWrong = "Error del servidor";
 
 class CallApi {
-  final String _url = 'http://192.168.1.5:8000/api/';
+  final String _url = 'https://maxqui.store/api/';
+  
+  // Servidor local
+  // final String _url = 'http://192.168.1.5:8000/api/';
 
   postData(data, apiUrl) async {
     var fullUrl = _url + apiUrl + await getToken();
     return await http.post(Uri.parse(fullUrl),
         body: jsonEncode(data), headers: _setHeaders());
   }
-    postEmail(data, apiUrl) async {
+
+  postEmail(data, apiUrl) async {
     var fullUrl = _url + apiUrl + await getToken();
     return await http.post(Uri.parse(fullUrl),
         body: jsonEncode(data), headers: _setHeaders());
@@ -95,6 +100,9 @@ class CallApi {
         case 401:
           apiRespuesta.error = unauthorized;
           break;
+        case 204:
+          apiRespuesta.error = datosVacios;
+          break;
         default:
           apiRespuesta.error = somethingWentWrong;
           break;
@@ -122,6 +130,9 @@ class CallApi {
               .toList();
           apiRespuesta.data as List<dynamic>;
           break;
+        case 204:
+          apiRespuesta.error = datosVacios;
+          break;
       }
     } catch (e) {
       apiRespuesta.error = serverError;
@@ -145,6 +156,9 @@ class CallApi {
               .map((p) => Offer.fromJson(p))
               .toList();
           apiRespuesta.data as List<dynamic>;
+          break;
+        case 204:
+          apiRespuesta.error = datosVacios;
           break;
       }
     } catch (e) {
@@ -201,7 +215,8 @@ class CallApi {
     }
     return apiRespuesta;
   }
-    Future<ApiRespuesta> getBuscarOfertas(apiUrl, name) async {
+
+  Future<ApiRespuesta> getBuscarOfertas(apiUrl, name) async {
     ApiRespuesta apiRespuesta = ApiRespuesta();
     try {
       var fullUrl = _url + apiUrl + name;

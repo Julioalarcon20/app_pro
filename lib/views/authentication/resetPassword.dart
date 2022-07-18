@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import '../../app_styles.dart';
 import '../../size_configs.dart';
@@ -72,7 +73,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               children: [
                 // Image.asset('assets/image/auth/signup_illustration.png'),
                 Container(
-                  child: (SvgPicture.asset('assets/svg/registro.svg',
+                  child: (SvgPicture.asset('assets/svg/codigo.svg',
                       width: 200, height: 200)),
                 ),
                 SizedBox(
@@ -154,26 +155,36 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   }
 
   onSubmit() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
     if (_resetKey.currentState!.validate()) {
       var data = {
         'token': token.text,
         'password': passwordController.text,
         'password_confirmation': ressController.text,
       };
-      var res = await CallApi().postData(data, 'reset');
-      var body = json.decode(res.body);
-      if (body['success'] == false) {
+      if (connectivityResult == ConnectivityResult.mobile ||
+          connectivityResult == ConnectivityResult.wifi) {
+        var res = await CallApi().postData(data, 'reset');
+        var body = json.decode(res.body);
+        if (body['success'] == false) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                "El token ingresado no es valido debes realizar una nueva solicitud",
+                style: TextStyle(color: kSecondaryColor)),
+            backgroundColor: kPrimaryColor,
+          ));
+        } else {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) {
+            return new LoginPage();
+          }), (Route<dynamic> route) => false);
+        }
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              "El token ingresado no es valido debes realizar una nueva solicitud",
+          content: Text("El dispositivo no tiene una conexion a internet",
               style: TextStyle(color: kSecondaryColor)),
           backgroundColor: kPrimaryColor,
         ));
-      } else {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) {
-          return new LoginPage();
-        }), (Route<dynamic> route) => false);
       }
     }
   }

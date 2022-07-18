@@ -4,5 +4,4 @@ export './onboard_nav_btn.dart';
 export './fields/my_password_field.dart';
 export './fields/my_text_form_field.dart';
 export './fields/text_perfil.dart';
-export './fields/my_check_box.dart';
 export './buttons/small_text_button.dart';

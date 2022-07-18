@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:maxqui_shop/util/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../api/api.dart';
 import '../../widgets/widgets.dart';
@@ -19,6 +20,7 @@ class EditarScreen extends StatefulWidget {
 
 class _EditarScreenState extends State<EditarScreen> {
   final _signUpKey = GlobalKey<FormState>();
+  User usuario = User();
   XFile? image;
   String imageBase64 = "";
   TextEditingController firstNameController = TextEditingController();
@@ -42,11 +44,11 @@ class _EditarScreenState extends State<EditarScreen> {
     var leer = localStorage.getString('user');
     var user = json.decode(leer!);
     setState(() {
-      userData = user;
-      firstNameController.text = '${userData['Nombre']}';
-      ApellidoController.text = '${userData['Apellido']}';
-      emailController.text = '${userData['email']}';
-      telefonoController.text = '${userData['telefono']}';
+      usuario = User.fromJson(user);
+      firstNameController.text = '${usuario.nombre}';
+      ApellidoController.text = '${usuario.apellido}';
+      emailController.text = '${usuario.email}';
+      telefonoController.text = '${usuario.telefono}';
     });
   }
 
@@ -95,8 +97,8 @@ class _EditarScreenState extends State<EditarScreen> {
             },
             child: image == null
                 ? ProfileWidget(
-                    imagePath: userData != null
-                        ? '${userData['img_perfil']}'
+                    imagePath: usuario.img != null
+                        ? servidor + '${usuario.img}'
                         : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
                     onClicked: () async {},
                   )
@@ -213,7 +215,7 @@ class _EditarScreenState extends State<EditarScreen> {
       'telefono': telefonoController.text,
       'img_perfil': imageBase64,
     };
-    var _iduser = '${userData['id']}';
+    var _iduser = '${usuario.id}';
     var res = await CallApi().putData(data, 'actualizar/', _iduser);
     var body = json.decode(res.body);
     if (body['success']) {

@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:maxqui_shop/app_styles.dart';
 import 'package:maxqui_shop/Nav.dart';
+import 'package:maxqui_shop/util/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../api/api.dart';
 import '../../widgets/profile_widget.dart';
 import 'package:maxqui_shop/views/pages.dart';
 
@@ -15,6 +17,7 @@ class PerfilScreen extends StatefulWidget {
 
 class _PerfilScreenState extends State<PerfilScreen> {
   var userData;
+  User usuario = User();
   @override
   void initState() {
     _getUserInfo();
@@ -26,7 +29,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
     var leer = localStorage.getString('user');
     var user = json.decode(leer!);
     setState(() {
-      return userData = user;
+      usuario = User.fromJson(user);
     });
   }
 
@@ -41,9 +44,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
         physics: const BouncingScrollPhysics(),
         children: [
           ProfileWidget(
-            imagePath: userData == null
-                ? "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80":
-                '${userData['img_perfil']}',
+            imagePath: usuario.img != null
+                ? servidor +'${usuario.img}'
+                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
             onClicked: () async {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => EditarScreen()),
@@ -95,7 +98,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              userData != null ? '${userData['Nombre']}' : '',
+              usuario.nombre != null ? '${usuario.nombre}' : '',
               style: const TextStyle(
                   color: ktercero,
                   fontWeight: FontWeight.w400,
@@ -113,7 +116,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              userData != null ? '${userData['Apellido']}' : '',
+              usuario.apellido != null ? '${usuario.apellido}' : '',
               style: const TextStyle(
                   color: ktercero,
                   fontWeight: FontWeight.w400,
@@ -131,7 +134,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              userData != null ? '${userData['email']}' : '',
+              usuario.email != null ? '${usuario.email}' : '',
               style: const TextStyle(
                   color: ktercero,
                   fontWeight: FontWeight.w400,
@@ -149,7 +152,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              userData != null ? '${userData['telefono']}' : '',
+              usuario.telefono != null ? '${usuario.telefono}' : '',
               style: const TextStyle(
                   color: ktercero,
                   fontWeight: FontWeight.w400,

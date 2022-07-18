@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import '../../app_styles.dart';
 import '../../size_configs.dart';
@@ -106,10 +107,12 @@ class _LoginPageState extends State<LoginPage> {
                                             controller: _password,
                                             fillColor: ktercero,
                                             focusNode: _loginFocusNodes[1],
-                                            validator: passwordValidator,
+                                            validator: passwordValidatoro,
                                           ),
                                           MyTextButton(
-                                            buttonName:                                         _isLoading? 'Cargando...' : 'Inicio de Sesión',
+                                            buttonName: _isLoading
+                                                ? 'Cargando...'
+                                                : 'Inicio de Sesión',
                                             onPressed: onSubmit,
                                             bgColor: kPrimaryColor,
                                           ),
@@ -144,8 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                                       Text(
                                         "¿No tienes una cuenta? ",
                                         style: TextStyle(
-                                            color: kPrimaryColor,
-                                            fontSize: 20),
+                                            color: kPrimaryColor, fontSize: 20),
                                       ),
                                       SmallTextButton(
                                         buttonText: 'Regístrate',
@@ -171,39 +173,48 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   onSubmit() async {
-      setState(() {
-       _isLoading = true;
+    setState(() {
+      _isLoading = true;
     });
-
+var connectivityResult = await (Connectivity().checkConnectivity());
     if (_loginKey.currentState!.validate()) {
-      var data = {'email': _email.text, 'password': _password.text};
-      var res = await CallApi().postData(data, 'login');
-      var body = json.decode(res.body);
-      if (body['success'] == false) {
+      if (connectivityResult == ConnectivityResult.mobile ||
+          connectivityResult == ConnectivityResult.wifi) {
+        var data = {'email': _email.text, 'password': _password.text};
+        var res = await CallApi().postData(data, 'login');
+        var body = json.decode(res.body);
+        if (body['success'] == false) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                "El usuario aun no se encuentra registado o revisa las credenciales ingresadas",
+                style: TextStyle(color: kSecondaryColor)),
+            backgroundColor: kPrimaryColor,
+          ));
+        } else {
+          if (body['success']) {
+            SharedPreferences localStorage =
+                await SharedPreferences.getInstance();
+            localStorage.setString('access_token', body['access_token']);
+            localStorage.setString('user', json.encode(body['user']));
+
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return new Home();
+            }), (Route<dynamic> route) => false);
+          }
+        }
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              "El usuario aun no se encuentra registado o revisa las credenciales ingresadas",
+          content: Text("El dispositivo no tiene una conexion a internet",
               style: TextStyle(color: kSecondaryColor)),
           backgroundColor: kPrimaryColor,
         ));
-      } else {
-        if (body['success']) {
-          SharedPreferences localStorage =
-              await SharedPreferences.getInstance();
-          localStorage.setString('access_token', body['access_token']);
-          localStorage.setString('user', json.encode(body['user']));
-
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) {
-            return new Home();
-          }), (Route<dynamic> route) => false);
-        }
       }
     } else {
       _loginKey.currentState!.validate();
     }
     setState(() {
-       _isLoading = false;
+      _isLoading = false;
     });
   }
 }

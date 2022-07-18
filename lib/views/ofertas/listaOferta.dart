@@ -6,7 +6,6 @@ import '../../app_styles.dart';
 import '../../model/apirespuesta.dart';
 import '../../size_configs.dart';
 import '../../widgets/searchOfertas.dart';
-import '../home_comp/search_field.dart';
 import 'detallesOfertas.dart';
 
 class OfertasListas extends StatefulWidget {
@@ -18,6 +17,7 @@ class OfertasListas extends StatefulWidget {
 
 class _OfertasState extends State<OfertasListas> {
   List<dynamic> ofertasList = [];
+  String? error;
   late bool _isLoading;
 
   Future<void> mostrarOfertas() async {
@@ -26,6 +26,10 @@ class _OfertasState extends State<OfertasListas> {
     if (res.error == null) {
       setState(() {
         ofertasList = res.data as List<dynamic>;
+      });
+    } else {
+      setState(() {
+        error = res.error;
       });
     }
     _isLoading = false;
@@ -96,101 +100,112 @@ class _OfertasState extends State<OfertasListas> {
                           color: kPrimaryColor,
                         ),
                       )
-                    : ListView.builder(
-                        itemCount: ofertasList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          Offer items = ofertasList[index];
-                          return Container(
-                            height: 170,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: ktercero,
-                                borderRadius: BorderRadius.circular(15)),
-                            margin: const EdgeInsets.only(bottom: 15),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 160,
-                                  width: 150,
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: kScaffoldBackground,
-                                    borderRadius: BorderRadius.circular(15),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                            servidor + '${items.url}')),
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text(
-                                        '${items.nombre}',
-                                        style: const TextStyle(
-                                          color: kSecondaryColor,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                        maxLines: 1,
+                    : error != null
+                        ? const Center(
+                            child: Text(
+                              "No existe ninguna oferta",
+                              style: TextStyle(
+                                color: kSecondaryColor,
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: ofertasList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Offer items = ofertasList[index];
+                              return Container(
+                                height: 170,
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    color: ktercero,
+                                    borderRadius: BorderRadius.circular(15)),
+                                margin: const EdgeInsets.only(bottom: 15),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 160,
+                                      width: 150,
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: kScaffoldBackground,
+                                        borderRadius: BorderRadius.circular(15),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                                servidor + '${items.url}')),
                                       ),
-                                      Text(
-                                        '\$ ${items.precio?.toStringAsFixed(2)}',
-                                        style: TextStyle(
-                                          color: kPrimaryColor,
-                                          fontSize:
-                                              getProportionateScreenWidth(15),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 1,
-                                      ),
-                                      Row(
+                                    ),
+                                    Expanded(
+                                        child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
                                         children: [
-                                          Expanded(
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          detalleOfertas(
-                                                              items)),
-                                                );
-                                              },
-                                              child: Container(
-                                                height: 35,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  color: kPrimaryColor,
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: const Text(
-                                                  "Ver más",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15,
+                                          Text(
+                                            '${items.nombre}',
+                                            style: const TextStyle(
+                                              color: kSecondaryColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                            maxLines: 1,
+                                          ),
+                                          Text(
+                                            '\$ ${items.precio?.toStringAsFixed(2)}',
+                                            style: TextStyle(
+                                              color: kPrimaryColor,
+                                              fontSize:
+                                                  getProportionateScreenWidth(
+                                                      15),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 1,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              detalleOfertas(
+                                                                  items)),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    height: 35,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      color: kPrimaryColor,
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: const Text(
+                                                      "Ver más",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                ))
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                                    ))
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
               ),
             ],
           ),

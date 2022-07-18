@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:maxqui_shop/views/home_comp/categoria.dart';
-import 'package:maxqui_shop/views/home_comp/home_header.dart';
 import 'package:maxqui_shop/views/home_comp/productos_oferta.dart';
 import '../../size_configs.dart';
 import 'banner.dart';

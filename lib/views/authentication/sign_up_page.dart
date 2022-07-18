@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import '../../app_styles.dart';
 import '../../size_configs.dart';
@@ -9,6 +10,7 @@ import '../../api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -18,6 +20,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final _signUpKey = GlobalKey<FormState>();
+  var red;
   String? token;
   TextEditingController firstNameController = TextEditingController();
   TextEditingController mailController = TextEditingController();
@@ -33,15 +36,32 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isLoading = false;
 
   Cuantaabierta() async {
-    String token = await guardarToken();
-    if (token == "") {
-      print('No hay token');
-    } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) {
-        return new Home();
-      }), (Route<dynamic> route) => false);
-    }
+    token = await guardarToken();
+    red = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
+        setState(() {
+          if (token == "") {
+            print('No hay token');
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return Home();
+            }), (Route<dynamic> route) => false);
+          }
+        });
+      } else {
+        setState(() {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("El dispositivo no tiene una conexion a internet",
+                style: TextStyle(color: kSecondaryColor)),
+            backgroundColor: kPrimaryColor,
+          ));
+        });
+      }
+    });
   }
 
   @override
@@ -55,6 +75,11 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
+  void dispose() {
+    super.dispose();
+    red.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -66,7 +91,6 @@ class _SignUpPageState extends State<SignUpPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                // Image.asset('assets/image/auth/signup_illustration.png'),
                 Container(
                   child: (SvgPicture.asset('assets/svg/registro.svg',
                       width: 200, height: 200)),
@@ -117,9 +141,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         fillColor: ktercero,
                         focusNode: _signUpFocusNodes[3],
                         validator: password_confiValidator,
-                      ),
-                      const MyCheckBox(
-                        text: 'Aceptar terminos y condiciones de servicio',
                       ),
                       MyTextButton(
                         buttonName: _isLoading ? 'Cargando...' : 'Crear cuenta',
@@ -182,6 +203,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _isLoading = true;
     });
     // _signUpKey.currentState!.validate();
+    var connectivityResult = await (Connectivity().checkConnectivity());
     if (_signUpKey.currentState!.validate()) {
       if (passwordController.text == ressController.text) {
         var data = {
@@ -190,17 +212,26 @@ class _SignUpPageState extends State<SignUpPage> {
           'password': passwordController.text,
           'password_confirmation': ressController.text,
         };
-        var res = await CallApi().postData(data, 'registro');
-        var body = json.decode(res.body);
-        if (body['success']) {
-          SharedPreferences localStorage =
-              await SharedPreferences.getInstance();
-          localStorage.setString('access_token', body['access_token']);
-          localStorage.setString('user', json.encode(body['user']));
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) {
-            return new Home();
-          }), (Route<dynamic> route) => false);
+        if (connectivityResult == ConnectivityResult.mobile ||
+            connectivityResult == ConnectivityResult.wifi) {
+          var res = await CallApi().postData(data, 'registro');
+          var body = json.decode(res.body);
+          if (body['success']) {
+            SharedPreferences localStorage =
+                await SharedPreferences.getInstance();
+            localStorage.setString('access_token', body['access_token']);
+            localStorage.setString('user', json.encode(body['user']));
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return new Home();
+            }), (Route<dynamic> route) => false);
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("El dispositivo no tiene una conexion a internet",
+                style: TextStyle(color: kSecondaryColor)),
+            backgroundColor: kPrimaryColor,
+          ));
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

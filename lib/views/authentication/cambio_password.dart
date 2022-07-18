@@ -18,11 +18,8 @@ class ActualizarPasswordPage extends StatefulWidget {
 
 class _ActualizarPasswordPageState extends State<ActualizarPasswordPage> {
   final _ActualizarPassKey = GlobalKey<FormState>();
+  bool _isLoading = false;
   final password = TextEditingController();
-
-  void _onSumbit() {
-    _ActualizarPassKey.currentState!.validate();
-  }
 
   FocusNode focusNode1 = FocusNode();
 
@@ -101,7 +98,7 @@ class _ActualizarPasswordPageState extends State<ActualizarPasswordPage> {
                               height: 10,
                             ),
                             const Text(
-                              "Una vez actualizada la contraseña el sistema cerrara la sesion",
+                              "Una vez actualizada la contraseña el sistema cerrara la sesión",
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(
@@ -112,10 +109,12 @@ class _ActualizarPasswordPageState extends State<ActualizarPasswordPage> {
                               hint: 'Nueva Contraseña',
                               fillColor: kScaffoldBackground,
                               focusNode: focusNode1,
-                              validator: emailValidator,
+                              validator: passwordValidator,
                             ),
                             MyTextButton(
-                              buttonName: 'Actualizar Contraseña',
+                              buttonName:  _isLoading
+                                  ? 'Cargando...'
+                                  : 'Actualizar Contraseña',
                               onPressed: _ActualizarPass,
                               bgColor: kPrimaryColor,
                             ),
@@ -137,6 +136,10 @@ class _ActualizarPasswordPageState extends State<ActualizarPasswordPage> {
   }
 
   _ActualizarPass() async {
+    _ActualizarPassKey.currentState!.validate();
+     setState(() {
+      _isLoading = true;
+    });
     var userData;
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var leer = localStorage.getString('user');
@@ -154,5 +157,8 @@ class _ActualizarPasswordPageState extends State<ActualizarPasswordPage> {
       Navigator.push(
           context, new MaterialPageRoute(builder: (context) => LoginPage()));
     }
+     setState(() {
+      _isLoading = false;
+    });
   }
 }

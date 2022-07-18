@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maxqui_shop/util/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:maxqui_shop/views/pages.dart';
 import 'package:maxqui_shop/api/api.dart';
@@ -12,14 +13,14 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-  var userData;
+  User usuario = User();
 
   void _getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var leer = localStorage.getString('user');
     var user = json.decode(leer!);
     setState(() {
-      userData = user;
+      usuario = User.fromJson(user);
     });
   }
 
@@ -39,16 +40,16 @@ class _NavBarState extends State<NavBar> {
         children: [
           UserAccountsDrawerHeader(
             accountName: Text(
-              userData != null ? '${userData['Nombre']}' : '',
+              usuario != null ? '${usuario.nombre}' : '',
             ),
             accountEmail: Text(
-              userData != null ? '${userData['email']}' : '',
+              usuario != null ? '${usuario.email}' : '',
             ),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
-                  userData != null
-                      ? '${userData['img_perfil']}'
+                  usuario.img != null
+                      ? servidor + '${usuario.img}'
                       : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
                   width: 80,
                   height: 80,
@@ -69,14 +70,14 @@ class _NavBarState extends State<NavBar> {
             leading: const Icon(Icons.home, color: Colors.white),
             title: const Text('Home', style: TextStyle(color: Colors.white)),
             onTap: () => Navigator.push(
-                context, new MaterialPageRoute(builder: (context) => Home())),
+                context, MaterialPageRoute(builder: (context) => Home())),
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.person, color: Colors.white),
             title: const Text('Perfil', style: TextStyle(color: Colors.white)),
             onTap: () => Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => PerfilScreen())),
+                MaterialPageRoute(builder: (context) => const PerfilScreen())),
           ),
           const Divider(),
           ListTile(
@@ -87,15 +88,8 @@ class _NavBarState extends State<NavBar> {
             ),
             onTap: () => Navigator.push(
                 context,
-                new MaterialPageRoute(
-                    builder: (context) => ActualizarPasswordPage())),
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.description, color: Colors.white),
-            title: const Text('Sobre la aplicación',
-                style: TextStyle(color: Colors.white)),
-            onTap: () => null,
+                MaterialPageRoute(
+                    builder: (context) => const ActualizarPasswordPage())),
           ),
           const Divider(),
           ListTile(
@@ -119,7 +113,7 @@ class _NavBarState extends State<NavBar> {
       localStorage.remove('access_token');
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) {
-        return new LoginPage();
+        return LoginPage();
       }), (Route<dynamic> route) => false);
       ;
     }

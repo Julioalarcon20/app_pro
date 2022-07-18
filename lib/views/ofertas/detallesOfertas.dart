@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maxqui_shop/views/ofertas/perfilE.dart';
 import '../../util/modelOffer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:whatsapp_unilink/whatsapp_unilink.dart';
@@ -6,7 +7,6 @@ import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 import '../../api/api.dart';
 import '../../app_styles.dart';
 import '../../size_configs.dart';
-
 class detalleOfertas extends StatefulWidget {
   Offer oferta;
   detalleOfertas(this.oferta, {Key? key}) : super(key: key);
@@ -136,7 +136,7 @@ class _detalleOfertasState extends State<detalleOfertas> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
+                    Column(
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
@@ -151,18 +151,30 @@ class _detalleOfertasState extends State<detalleOfertas> {
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '${widget.oferta.empresa?.Nombre_empre}',
-                            style: TextStyle(
-                              color: kSecondaryColor,
-                              fontSize: getProportionateScreenWidth(14),
-                              letterSpacing: 1,
-                              height: 1.4,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${widget.oferta.empresa?.Nombre_empre}',
+                              style: TextStyle(
+                                color: kSecondaryColor,
+                                fontSize: getProportionateScreenWidth(15),
+                              ),
                             ),
-                          ),
-                        ),
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PerfilE(widget.oferta)),
+                                  );
+                                },
+                                child: const Text(
+                                  "Ver Perfil",
+                                  style: TextStyle(color: kPrimaryColor),
+                                ))
+                          ])
                       ],
                     ),
                     const SizedBox(height: 10),
